@@ -51,7 +51,7 @@ jobs:
 
   check_coding_style:
     needs: verif_repo
-    if: needs.verif_repo.outputs.is_repo == 'false'
+    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -78,7 +78,7 @@ jobs:
 
   check_program_compilation:
     needs: [verif_repo, check_coding_style]
-    if: needs.verif_repo.outputs.is_repo == 'false'
+    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -104,7 +104,7 @@ jobs:
 
   run_tests:
     needs: [verif_repo, check_program_compilation]
-    if: needs.verif_repo.outputs.is_repo == 'false'
+    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -132,7 +132,7 @@ jobs:
     needs: [verif_repo, run_tests]
     if: |
       github.event_name == 'push' &&
-      needs.verif_repo.outputs.is_repo == 'false'
+      needs.verif_repo.outputs.is_mirror_repo == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
