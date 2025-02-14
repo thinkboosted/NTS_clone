@@ -24,26 +24,19 @@ jobs:
       - name: Check if repo is the right one
         id: set_condition
         run: |
-          REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
+          REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*[:/]([^/]+)\/([^/]+)\.git$/\1\/\2/')
           echo "Parsed repo name: $REPO_NAME"
           if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
-            echo "is_repo=true" >> $GITHUB_ENV
-            echo "is_repo=true" > $GITHUB_OUTPUT
+            echo "is_repo=true" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is the right repo"
-            echo " $GITHUB_ENV"
-            echo " $GITHUB_OUTPUT"
           else
-            echo "is_repo=false" >> $GITHUB_ENV
-            echo "is_repo=false" > $GITHUB_OUTPUT
+            echo "is_repo=false" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is not the right repo"
-            echo " $REPO_NAME"
-            echo " $GITHUB_ENV"
-            echo " $GITHUB_OUTPUT"
           fi
 
   check_coding_style:
     needs: verif_repo
-    if: ${{ needs.verif_repo.outputs.is_repo == 'false' }}
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -59,22 +52,18 @@ jobs:
           if [ ! -s coding-style-reports.log ]; then
             echo "::notice title=No coding style error found::"
           else
-            cat coding-style-reports.log | while read line; do
-              ERROR_CODE=$(echo $line | cut -d':' -f 4)
-              echo "$ERROR_CODE"
-              ERROR_TYPE=$(echo $line | cut -d':' -f 3)
-              LINE=$(echo $line | cut -d':' -f 2)
-              FILE=$(echo $line | cut -d':' -f 1)
-              echo "file=$FILE line=$LINE $ERROR_CODE"
-              TITLE=$(echo $ERROR_TYPE coding style error)
-              echo "::error title=$TITLE,file=$FILE,line=$LINE::$ERROR_CODE"
-            done
+            while read line; do
+              FILE=$(echo "$line" | cut -d':' -f1)
+              LINE=$(echo "$line" | cut -d':' -f2)
+              ERROR=$(echo "$line" | cut -d':' -f4)
+              echo "::error file=$FILE,line=$LINE::$ERROR"
+            done < coding-style-reports.log
             exit 1
           fi
 
   check_program_compilation:
     needs: [verif_repo, check_coding_style]
-    if: ${{ needs.verif_repo.outputs.is_repo == 'false' }}
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -86,23 +75,21 @@ jobs:
         run: make
         timeout-minutes: 2
 
-      - name: clean
+      - name: Clean
         run: make clean
 
-      - name: check executables exist
+      - name: Check executables
         run: |
-          for exe in $(echo "${{ env.EXECUTABLES }}" | tr ',' '\n'); do
-            if [ ! -x "$exe" ]; then
-              echo "::error::Executable $exe does not exist"
+          for exe in $(echo "${{ env.EXECUTABLES }}" | tr ' ' '\n'); do
+            if [ ! -f "$exe" ]; then
+              echo "::error file=$exe::Executable $exe missing"
               exit 1
-            else
-              echo "::notice::Executable $exe exists"
             fi
           done
 
   run_tests:
-    needs: [check_program_compilation, verif_repo]
-    if: ${{ needs.verif_repo.outputs.is_repo == 'false' }}
+    needs: [verif_repo, check_program_compilation]
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -114,32 +101,27 @@ jobs:
         run: make tests_run
         timeout-minutes: 2
 
-      - name: clean
+      - name: Clean
         run: make clean
 
-      - name: check test executable exists
+      - name: Verify test executables
         run: |
-          for exe in $(echo "${{ env.TESTS_EXECUTABLES }}" | tr ',' '\n'); do
+          for exe in $(echo "${{ env.TESTS_EXECUTABLES }}" | tr ' ' '\n'); do
             if [ ! -x "$exe" ]; then
-              echo "::error::Executable $exe does not exist"
+              echo "::error file=$exe::Test executable $exe missing"
               exit 1
-            else
-              echo "::notice::Test Executable $exe exists"
             fi
           done
 
   push_to_mirror:
-    needs: [run_tests, verif_repo]
-    if: ${{ needs.verif_repo.outputs.is_repo == 'false' && github.event_name == 'push' }}
+    needs: [verif_repo, run_tests]
+    if: |
+      github.event_name == 'push' &&
+      needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     steps:
       - name: Push to mirror
-        uses: actions/checkout@v4
+        uses: pixta-dev/repository-mirroring-action@v1
         with:
-          fetch-depth: 0
-      - uses: pixta-dev/repository-mirroring-action@v1
-        with:
-          target_repo_url:
-            ${{ secrets.MIRROR_URL }}
-          ssh_private_key:
-            ${{ secrets.ORG_DEPLOY_KEY }}
+          target_repo_url: ${{ secrets.MIRROR_URL }}
+          ssh_private_key: ${{ secrets.ORG_DEPLOY_KEY }}
