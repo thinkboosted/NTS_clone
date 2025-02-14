@@ -129,7 +129,7 @@ jobs:
 
   push_to_mirror:
     if: github.event_name == 'push'
-    needs: check_program_compilation
+    needs: run_tests
     runs-on: ubuntu-latest
     steps:
       - name: Push to mirror
