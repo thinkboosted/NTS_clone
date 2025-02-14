@@ -19,24 +19,39 @@ jobs:
   verif_repo:
     runs-on: ubuntu-latest
     outputs:
-      is_repo: ${{ steps.set_condition.outputs.is_repo }}
+      is_mirror_repo: ${{ steps.set_condition.outputs.is_mirror }}
     steps:
-      - name: Check if repo is the right one
+      - name: Check repo type
         id: set_condition
         run: |
-          REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*[:/]([^/]+)\/([^/]+)\.git$/\1\/\2/')
-          echo "Parsed repo name: $REPO_NAME"
-          if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
-            echo "is_repo=true" >> $GITHUB_OUTPUT
-            echo "${{ github.repository }} is the right repo"
+          # Debug: Afficher les valeurs brutes
+          echo "MIRROR_URL: ${{ secrets.MIRROR_URL }}"
+          echo "Current repo: ${{ github.repository }}"
+
+          # Extraction robuste du nom du dépôt miroir
+          if [[ "${{ secrets.MIRROR_URL }}" =~ (git@github.com:|https:\/\/github.com\/)([^/]+\/[^/.]+) ]]; then
+              REPO_NAME="${BASH_REMATCH[2]}"
+              REPO_NAME_LOWER=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
+              CURRENT_REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
+
+              echo "Mirror repo: $REPO_NAME_LOWER"
+              echo "Current repo: $CURRENT_REPO_LOWER"
+
+              if [ "$REPO_NAME_LOWER" == "$CURRENT_REPO_LOWER" ]; then
+                  echo "is_mirror=true" >> $GITHUB_OUTPUT
+                  echo "🟢 Ceci est le dépôt miroir"
+              else
+                  echo "is_mirror=false" >> $GITHUB_OUTPUT
+                  echo "🔴 Ceci est le dépôt source"
+              fi
           else
-            echo "is_repo=false" >> $GITHUB_OUTPUT
-            echo "${{ github.repository }} is not the right repo"
+              echo "❌ Format de MIRROR_URL invalide"
+              echo "is_mirror=false" >> $GITHUB_OUTPUT
           fi
 
   check_coding_style:
     needs: verif_repo
-    if: needs.verif_repo.outputs.is_repo == 'true'
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -63,7 +78,7 @@ jobs:
 
   check_program_compilation:
     needs: [verif_repo, check_coding_style]
-    if: needs.verif_repo.outputs.is_repo == 'true'
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -89,7 +104,7 @@ jobs:
 
   run_tests:
     needs: [verif_repo, check_program_compilation]
-    if: needs.verif_repo.outputs.is_repo == 'true'
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
