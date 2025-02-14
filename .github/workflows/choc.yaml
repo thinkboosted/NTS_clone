@@ -25,7 +25,7 @@ jobs:
       - name: Check if repo is the right one
         id: set_condition
         run: |
-          REPO_NAME=$(echo "${{ env.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
+          REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
           echo "Parsed repo name: $REPO_NAME"
           if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
             echo "is_repo=true" >> $GITHUB_ENV
@@ -139,6 +139,6 @@ jobs:
       - uses: pixta-dev/repository-mirroring-action@v1
         with:
           target_repo_url:
-            ${{ env.MIRROR_URL }}
+            ${{ secrets.MIRROR_URL }}
           ssh_private_key:
             ${{ secrets.ORG_DEPLOY_KEY }}
