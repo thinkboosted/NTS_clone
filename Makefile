@@ -5,7 +5,7 @@
 ## Makefile
 ##
 
-NAME = myprogram
+NAME = nanotekspice
 
 SRC = main.cpp
 
