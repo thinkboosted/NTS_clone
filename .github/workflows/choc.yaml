@@ -1,4 +1,4 @@
-name: choc
+name: chocolatine
 
 run-name: chocolatine ${{ github.repository }}
 
@@ -19,39 +19,28 @@ jobs:
   verif_repo:
     runs-on: ubuntu-latest
     outputs:
-      is_mirror_repo: ${{ steps.set_condition.outputs.is_mirror }}
+      is_repo: ${{ steps.set_condition.outputs.is_repo }}
     steps:
-      - name: Check repo type
+      - name: Check if repo is the right one
         id: set_condition
         run: |
-          # Debug: Afficher les valeurs brutes
-          echo "MIRROR_URL: ${{ secrets.MIRROR_URL }}"
-          echo "Current repo: ${{ github.repository }}"
-
-          # Extraction robuste du nom du dépôt miroir
-          if [[ "${{ secrets.MIRROR_URL }}" =~ (git@github.com:|https:\/\/github.com\/)([^/]+\/[^/.]+) ]]; then
-              REPO_NAME="${BASH_REMATCH[2]}"
-              REPO_NAME_LOWER=$(echo "$REPO_NAME" | tr '[:upper:]' '[:lower:]')
-              CURRENT_REPO_LOWER=$(echo "${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
-
-              echo "Mirror repo: $REPO_NAME_LOWER"
-              echo "Current repo: $CURRENT_REPO_LOWER"
-
-              if [ "$REPO_NAME_LOWER" == "$CURRENT_REPO_LOWER" ]; then
-                  echo "is_mirror=true" >> $GITHUB_OUTPUT
-                  echo "🟢 Ceci est le dépôt miroir"
-              else
-                  echo "is_mirror=false" >> $GITHUB_OUTPUT
-                  echo "🔴 Ceci est le dépôt source"
-              fi
+          echo "${{ secrets.MIRROR_URL }}"
+          REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
+          echo "Parsed repo name: $REPO_NAME"
+          if [ "${{ github.repository }}" = "$REPO_NAME" ] || [ "$REPO_NAME" = "" ]; then
+            echo "is_repo=true" >> $GITHUB_ENV
+            echo "is_repo=true" >> $GITHUB_OUTPUT
+            echo "${{ github.repository }} is the right repo"
+            echo "Debug: github.repository=${{ github.repository }}, REPO_NAME=$REPO_NAME"
           else
-              echo "❌ Format de MIRROR_URL invalide"
-              echo "is_mirror=false" >> $GITHUB_OUTPUT
+            echo "is_repo=false" >> $GITHUB_ENV
+            echo "is_repo=false" >> $GITHUB_OUTPUT
+            echo "${{ github.repository }} is not the right repo"
+            echo "Debug: github.repository=${{ github.repository }}, REPO_NAME=$REPO_NAME"
           fi
 
   check_coding_style:
     needs: verif_repo
-    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -67,18 +56,21 @@ jobs:
           if [ ! -s coding-style-reports.log ]; then
             echo "::notice title=No coding style error found::"
           else
-            while read line; do
-              FILE=$(echo "$line" | cut -d':' -f1)
-              LINE=$(echo "$line" | cut -d':' -f2)
-              ERROR=$(echo "$line" | cut -d':' -f4)
-              echo "::error file=$FILE,line=$LINE::$ERROR"
-            done < coding-style-reports.log
+            cat coding-style-reports.log | while read line; do
+              ERROR_CODE=$(echo $line | cut -d':' -f 4)
+              echo "$ERROR_CODE"
+              ERROR_TYPE=$(echo $line | cut -d':' -f 3)
+              LINE=$(echo $line | cut -d':' -f 2)
+              FILE=$(echo $line | cut -d':' -f 1)
+              echo "file=$FILE line=$LINE $ERROR_CODE"
+              TITLE=$(echo $ERROR_TYPE coding style error)
+              echo "::error title=$TITLE,file=$FILE,line=$LINE::$ERROR_CODE"
+            done
             exit 1
           fi
 
   check_program_compilation:
-    needs: [verif_repo, check_coding_style]
-    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
+    needs: verif_repo
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -90,21 +82,22 @@ jobs:
         run: make
         timeout-minutes: 2
 
-      - name: Clean
+      - name: clean
         run: make clean
 
-      - name: Check executables
+      - name: check executables exist
         run: |
-          for exe in $(echo "${{ env.EXECUTABLES }}" | tr ' ' '\n'); do
-            if [ ! -f "$exe" ]; then
-              echo "::error file=$exe::Executable $exe missing"
+          for exe in $(echo "${{ env.EXECUTABLES }}" | tr ',' '\n'); do
+            if [ ! -x "$exe" ]; then
+              echo "::error::Executable $exe does not exist"
               exit 1
+            else
+              echo "::notice::Executable $exe exists"
             fi
           done
 
   run_tests:
-    needs: [verif_repo, check_program_compilation]
-    if: needs.verif_repo.outputs.is_mirror_repo == 'false'
+    needs: verif_repo
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -116,31 +109,32 @@ jobs:
         run: make tests_run
         timeout-minutes: 2
 
-      - name: Clean
+      - name: clean
         run: make clean
 
-      - name: Verify test executables
+      - name: check test executable exists
         run: |
-          for exe in $(echo "${{ env.TESTS_EXECUTABLES }}" | tr ' ' '\n'); do
+          for exe in $(echo "${{ env.TESTS_EXECUTABLES }}" | tr ',' '\n'); do
             if [ ! -x "$exe" ]; then
-              echo "::error file=$exe::Test executable $exe missing"
+              echo "::error::Executable $exe does not exist"
               exit 1
+            else
+              echo "::notice::Test Executable $exe exists"
             fi
           done
 
   push_to_mirror:
-    needs: [verif_repo, run_tests]
-    if: |
-      github.event_name == 'push' &&
-      needs.verif_repo.outputs.is_mirror_repo == 'false'
+    needs: [run_tests, check_program_compilation, check_coding_style, verif_repo]
+    if: needs.verif_repo.outputs.is_repo == 'false' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Push to mirror
         uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: Push to mirror
-        uses: pixta-dev/repository-mirroring-action@v1
+      - uses: pixta-dev/repository-mirroring-action@v1
         with:
-          target_repo_url: ${{ secrets.MIRROR_URL }}
-          ssh_private_key: ${{ secrets.ORG_DEPLOY_KEY }}
+          target_repo_url:
+            ${{ secrets.MIRROR_URL }}
+          ssh_private_key:
+            ${{ secrets.ORG_DEPLOY_KEY }}
