@@ -36,6 +36,7 @@ jobs:
             echo "is_repo=false" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is not the right repo"
             echo "Debug: github.repository=${{ github.repository }}, REPO_NAME=$REPO_NAME"
+          fi
 
   check_coding_style:
     needs: verif_repo
