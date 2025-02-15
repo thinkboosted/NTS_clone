@@ -41,7 +41,6 @@ jobs:
 
   check_coding_style:
     needs: verif_repo
-    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -125,8 +124,8 @@ jobs:
           done
 
   push_to_mirror:
-    if: github.event_name == 'push'
-    needs: [run_tests, check_program_compilation, check_coding_style]
+    needs: [run_tests, check_program_compilation, check_coding_style, verif_repo]
+    if: needs.verif_repo.outputs.is_repo == 'false' && github.event_name == 'push'
     runs-on: ubuntu-latest
     steps:
       - name: Push to mirror
