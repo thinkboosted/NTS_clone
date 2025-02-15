@@ -27,7 +27,7 @@ jobs:
           echo "${{ secrets.MIRROR_URL }}"
           REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
           echo "Parsed repo name: $REPO_NAME"
-          if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
+          if [ "${{ github.repository }}" = "$REPO_NAME" ] || [ "$REPO_NAME" = "" ]; then
             echo "is_repo=true" >> $GITHUB_ENV
             echo "is_repo=true" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is the right repo"
