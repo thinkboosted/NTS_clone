@@ -24,6 +24,7 @@ jobs:
       - name: Check if repo is the right one
         id: set_condition
         run: |
+          echo "${{ secrets.MIRROR_URL }}"
           REPO_NAME=$(echo "${{ secrets.MIRROR_URL }}" | sed -E 's/.*:([^\/]+)\/(.+)\.git/\1\/\2/')
           echo "Parsed repo name: $REPO_NAME"
           if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
@@ -70,6 +71,7 @@ jobs:
           fi
 
   check_program_compilation:
+    needs: verif_repo
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -96,6 +98,7 @@ jobs:
           done
 
   run_tests:
+    needs: verif_repo
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
