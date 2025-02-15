@@ -28,18 +28,15 @@ jobs:
           echo "Parsed repo name: $REPO_NAME"
           if [ "${{ github.repository }}" == "$REPO_NAME" ]; then
             echo "is_repo=true" >> $GITHUB_ENV
-            echo "is_repo=true" > $GITHUB_OUTPUT
+            echo "is_repo=true" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is the right repo"
-            echo " $GITHUB_ENV"
-            echo " $GITHUB_OUTPUT"
+            echo "Debug: github.repository=${{ github.repository }}, REPO_NAME=$REPO_NAME"
+          else
           else
             echo "is_repo=false" >> $GITHUB_ENV
-            echo "is_repo=false" > $GITHUB_OUTPUT
+            echo "is_repo=false" >> $GITHUB_OUTPUT
             echo "${{ github.repository }} is not the right repo"
-            echo " $REPO_NAME"
-            echo " $GITHUB_ENV"
-            echo " $GITHUB_OUTPUT"
-          fi
+            echo "Debug: github.repository=${{ github.repository }}, REPO_NAME=$REPO_NAME"
 
   check_coding_style:
     needs: verif_repo
@@ -73,7 +70,6 @@ jobs:
           fi
 
   check_program_compilation:
-    needs: check_coding_style
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -100,7 +96,6 @@ jobs:
           done
 
   run_tests:
-    needs: check_program_compilation
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -128,7 +123,7 @@ jobs:
 
   push_to_mirror:
     if: github.event_name == 'push'
-    needs: check_program_compilation
+    needs: [run_tests, check_program_compilation, check_coding_style]
     runs-on: ubuntu-latest
     steps:
       - name: Push to mirror
