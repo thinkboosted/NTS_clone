@@ -41,6 +41,7 @@ jobs:
 
   check_coding_style:
     needs: verif_repo
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: ghcr.io/epitech/coding-style-checker:latest
@@ -71,6 +72,7 @@ jobs:
 
   check_program_compilation:
     needs: verif_repo
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
@@ -98,6 +100,7 @@ jobs:
 
   run_tests:
     needs: verif_repo
+    if: needs.verif_repo.outputs.is_repo == 'false'
     runs-on: ubuntu-latest
     container:
       image: epitechcontent/epitest-docker:latest
