@@ -1,11 +1,13 @@
 /*
 ** EPITECH PROJECT, 2025
-** NTS_clone
+** nanoTekSpice
 ** File description:
-** main
+** Main
 */
 
-int main(void)
+#include <iostream>
+
+int main()
 {
     return 0;
 }
