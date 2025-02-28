@@ -30,3 +30,7 @@
 *.exe
 *.out
 *.app
+
+B-OOP*
+nanotekspice
+*.json
