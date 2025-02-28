@@ -145,7 +145,9 @@ void Parser::validateLinksSection(const std::vector<std::string>& lines) const
                 if (components.find(comp2) == components.end()) {
                     throw UnknownComponentError(comp2);
                 }
-                // Next : check if the pins are valid for the components
+                // Next : check if the pins are valid
+                if (pin1 <= 0 || pin2 <= 0)
+                    throw InvalidPinError(comp1, pin1);
             }
         }
     }
