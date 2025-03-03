@@ -44,6 +44,7 @@ build_test:
 
 clean:
 	@rm -f $(OBJ)
+	@rm -f $(OBJ_MAIN)
 	@rm -f $(BUILD_DIR)/*.gcda
 	@rm -f $(BUILD_DIR)/*.gcno
 
