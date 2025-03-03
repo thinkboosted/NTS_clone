@@ -11,7 +11,6 @@ nts::ShellLoop::ShellLoop(Circuit &circuit) : _circuit(circuit)
 {
     _commands.emplace("exit", &ShellLoop::exit);
     _commands.emplace("simulate", &ShellLoop::simulate);
-    _commands.emplace("dump", &ShellLoop::dump);
     _commands.emplace("display", &ShellLoop::display);
     _commands.emplace("loop", &ShellLoop::loop);
     _running = true;
@@ -25,13 +24,6 @@ void nts::ShellLoop::exit(Circuit &circuit)
 {
     (void)circuit;
     _running = false;
-}
-
-void nts::ShellLoop::dump(Circuit &circuit)
-{
-    (void)circuit;
-    std::cout << "Dumping circuit" << std::endl;
-    // circuit.dump();
 }
 
 void nts::ShellLoop::display(Circuit &circuit)
