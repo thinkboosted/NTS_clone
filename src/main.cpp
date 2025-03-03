@@ -9,6 +9,7 @@
 #include <memory>
 #include "../include/Factory.hpp"
 #include "../include/Circuit.hpp"
+#include "../include/ShellLoop.hpp"
 
 void parse_smth()
 {
@@ -21,13 +22,14 @@ void parse_smth()
 static int start(int ac, char **argv)
 {
 	// Parser parser;
-	// Circuit circuit;
+	nts::Circuit circuit;
 	int	ret = 0;
 
 	try {
 		// parser.parse(argv[1], circuit);
 		// parser.parse_args(ac, argv, circuit);
-        // call loop shell
+		nts::ShellLoop shell(circuit);
+		shell.run();
         parse_smth();
 	}
     catch (const std::exception &e) {

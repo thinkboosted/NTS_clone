@@ -14,6 +14,7 @@ class ShellLoop {
     public:
         ShellLoop(Circuit &circuit);
         ~ShellLoop();
+        void run();
 
     private:
         Circuit _circuit;

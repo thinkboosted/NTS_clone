@@ -48,3 +48,19 @@ void nts::ShellLoop::loop(Circuit &circuit)
         circuit.display();
     }
 }
+
+void nts::ShellLoop::run()
+{
+    std::string input;
+
+    while (_running) {
+        std::cout << "> ";
+        std::cin >> input;
+        if (_commands.find(input) != _commands.end())
+            (this->*_commands[input])(_circuit);
+        else if (input == "exit")
+            exit(_circuit);
+        else
+            std::cout << "Command not found" << std::endl;
+    }
+}
