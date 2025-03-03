@@ -15,20 +15,21 @@ COVERAGE_DIR := $(BUILD_DIR)/coverage
 TEST_EXEC := $(BUILD_DIR)/$(TEST_NAME)
 
 
-SRC 	= 		$(SRC_DIR)/Parser.cpp					\
-				$(SRC_DIR)/Factory.cpp					\
-				$(SRC_DIR)/specialComponents/Input.cpp	\
-				$(SRC_DIR)/specialComponents/Output.cpp	\
-				$(SRC_DIR)/specialComponents/Clock.cpp	\
-				$(SRC_DIR)/specialComponents/True.cpp	\
-				$(SRC_DIR)/specialComponents/False.cpp	\
-				$(SRC_DIR)/ShellLoop.cpp				\
-				$(SRC_DIR)/AComponent.cpp		\
-				$(SRC_DIR)/specialComponents/ANDComponent.cpp
+SRC 	= 		$(SRC_DIR)/Parser.cpp	\
+                $(SRC_DIR)/Circuit.cpp	\
+                $(SRC_DIR)/Factory.cpp	\
+                $(SRC_DIR)/AComponent.cpp	\
+                $(SRC_DIR)/specialComponents/Output.cpp	\
+                $(SRC_DIR)/specialComponents/Input.cpp	\
+                $(SRC_DIR)/specialComponents/AND.cpp	\
+                $(SRC_DIR)/specialComponents/True.cpp	\
+                $(SRC_DIR)/specialComponents/False.cpp	\
+                $(SRC_DIR)/specialComponents/Clock.cpp	\
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
-TEST_SRC = test.cpp \
+TEST_SRC = 		$(TEST_DIR)/test.cpp \
+				$(TEST_DIR)/test_circuit.cpp
 
 
 OBJ = $(SRC:.cpp=.o)
@@ -49,7 +50,7 @@ $(NAME): $(OBJ) $(OBJ_MAIN)
 
 build_test:
 	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(TEST_FLAGS) $(SRC) $(TEST_DIR)/$(TEST_SRC) -o $(TEST_EXEC)
+	$(CXX) $(TEST_FLAGS) $(SRC) $(TEST_SRC) -o $(TEST_EXEC)
 
 clean:
 	@rm -f $(OBJ)
@@ -67,7 +68,7 @@ re: fclean all
 tests_run: clean build_test
 	$(TEST_EXEC)
 
-coverage:
+coverage: clean build_test
 	@mkdir -p $(COVERAGE_DIR)
 	@$(TEST_EXEC)
 	@gcovr -r . --exclude='tests/.*' --exclude='.*\.hpp'
