@@ -1,5 +1,5 @@
-#ifndef AND_HPP
-#define AND_HPP
+#ifndef CLOCK_HPP
+#define CLOCK_HPP
 
 #include <string>
 #include <memory>
@@ -7,11 +7,11 @@
 
 namespace nts
 {
-    class ANDComponent : public AComponent
+    class ClockComponent : public AComponent
     {
         public:
-            ANDComponent(const std::string &name);
-            ~ANDComponent() = default;
+            ClockComponent(const std::string &name);
+            ~ClockComponent() = default;
 
             void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin) override;
             void simulate() override;
@@ -19,4 +19,4 @@ namespace nts
     };
 }
 
-#endif // AND_HPP
+#endif // CLOCK_HPP

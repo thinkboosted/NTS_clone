@@ -21,3 +21,20 @@ void nts::TrueComponent::simulate()
 void nts::TrueComponent::compute()
 {
 }
+
+void nts::TrueComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
+{
+    (void)otherPin;
+    (void)pin;
+    (void)other;
+}
+
+nts::Tristate nts::TrueComponent::getState() const
+{
+    return nts::TRUE;
+}
+
+void nts::TrueComponent::setState(nts::Tristate state)
+{
+    (void)state;
+}
