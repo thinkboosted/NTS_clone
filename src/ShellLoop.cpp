@@ -23,29 +23,37 @@ nts::ShellLoop::~ShellLoop()
 
 void nts::ShellLoop::exit(Circuit &circuit)
 {
+    (void)circuit;
     _running = false;
 }
 
 void nts::ShellLoop::dump(Circuit &circuit)
 {
-    circuit.dump();
+    (void)circuit;
+    std::cout << "Dumping circuit" << std::endl;
+    // circuit.dump();
 }
 
 void nts::ShellLoop::display(Circuit &circuit)
 {
-    circuit.display();
+    (void)circuit;
+    std::cout << "Displaying circuit" << std::endl;
+    // circuit.display();
 }
 
 void nts::ShellLoop::simulate(Circuit &circuit)
 {
-    circuit.simulate();
+    (void)circuit;
+    std::cout << "Simulating circuit" << std::endl;
+    // circuit.simulate();
 }
 
 void nts::ShellLoop::loop(Circuit &circuit)
 {
+    (void)circuit;
     while (_running) {
-        circuit.simulate();
-        circuit.display();
+        // circuit.simulate();
+        // circuit.display();
     }
 }
 

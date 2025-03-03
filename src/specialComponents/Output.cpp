@@ -24,7 +24,8 @@ void nts::OutputComponent::compute()
 
 void nts::OutputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
 {
+    (void)otherPin;
     if (pin != 1)
         throw std::out_of_range("Error: Pin index out of range");
-    this->_pins[pin - 1] = std::make_unique<nts::IComponent>(other);
+    this->_pins[pin - 1].reset(&other);
 }

@@ -8,8 +8,12 @@
 #include <iostream>
 #include <sstream>
 #include <regex>
+#include <memory>
 #include "../include/Parser.hpp"
 #include "../include/NanoTekSpiceException.hpp"
+#include "../include/Factory.hpp"
+#include "../include/Circuit.hpp"
+#include "../include/ShellLoop.hpp"
 
 void displayComponents(const std::vector<std::string>& lines) {
     std::cout << "\n=== COMPONENTS ===\n";
@@ -56,14 +60,14 @@ void displayLinks(const std::vector<std::string>& lines) {
     }
 }
 
-int main(int argc, char **argv) {
-    if (argc != 2) {
-        std::cerr << "Usage: " << argv[0] << " <circuit_file>" << std::endl;
-        return 84;
-    }
+static int start(int ac, char **argv)
+{
+	nts::Circuit circuit;
+	int	ret = 0;
 
-    try {
-        Parser myParser(argv[1]);
+	(void)ac;
+	try {
+		Parser myParser(argv[1]);
         std::vector<std::string> content = myParser.parse();
 
         std::cout << "Circuit successfully parsed!" << std::endl;
@@ -75,6 +79,8 @@ int main(int argc, char **argv) {
         }
         displayComponents(content);
         displayLinks(content);
+		nts::ShellLoop shell(circuit);
+		shell.run();
     }
     catch (const NanoTekSpiceException& e) {
         std::cerr << e.what() << std::endl;
@@ -84,5 +90,14 @@ int main(int argc, char **argv) {
         std::cerr << "Error: " << e.what() << std::endl;
         return 84;
     }
-    return 0;
+	return ret;
+}
+
+int main(int argc, char **argv) {
+    if (argc != 2) {
+        std::cerr << "Usage: " << argv[0] << " <circuit_file>" << std::endl;
+        return 84;
+    } else {
+		return start(argc, argv);
+	}
 }

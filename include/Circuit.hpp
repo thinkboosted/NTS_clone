@@ -28,5 +28,4 @@ namespace nts
             Factory _factory;
     };
 }
-
 #endif // CIRCUIT_HPP

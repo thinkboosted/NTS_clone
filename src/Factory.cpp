@@ -6,7 +6,7 @@
 */
 
 #include "../include/Factory.hpp"
-#include "../include/specialComponents/AND.hpp"
+#include "./specialComponents/AND.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
