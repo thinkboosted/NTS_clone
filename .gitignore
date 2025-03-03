@@ -32,4 +32,6 @@
 *.app
 
 *.vscode
+B-OOP*
 nanotekspice
+*.json
