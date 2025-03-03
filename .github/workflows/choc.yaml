@@ -12,7 +12,6 @@ on:
 
 env:
   EXECUTABLES: "nanotekspice"
-  TESTS_EXECUTABLES: "unit_tests"
 
 jobs:
 
@@ -115,16 +114,6 @@ jobs:
       - name: clean
         run: make clean
 
-      - name: check test executable exists
-        run: |
-          for exe in $(echo "${{ env.TESTS_EXECUTABLES }}" | tr ',' '\n'); do
-            if [ ! -x "$exe" ]; then
-              echo "::error::Executable $exe does not exist"
-              exit 1
-            else
-              echo "::notice::Test Executable $exe exists"
-            fi
-          done
 
   push_to_mirror:
     needs: [run_tests, check_program_compilation, check_coding_style, verif_repo]
