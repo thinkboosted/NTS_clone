@@ -55,7 +55,7 @@ fclean: clean
 
 re: fclean all
 
-tests_run: build_test
+tests_run: clean build_test
 	$(TEST_EXEC)
 
 coverage:
