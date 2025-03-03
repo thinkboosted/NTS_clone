@@ -25,7 +25,7 @@ std::unique_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return createOutput();
     else if (type == "clock")
         return createClock();
-    else if (type == "AND")
+    else if (type == "and")
         return createAND();
     else
         return nullptr;

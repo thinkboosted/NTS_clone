@@ -21,7 +21,7 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp	\
                 $(SRC_DIR)/AComponent.cpp	\
                 $(SRC_DIR)/specialComponents/Output.cpp	\
                 $(SRC_DIR)/specialComponents/Input.cpp	\
-                $(SRC_DIR)/specialComponents/AND.cpp	\
+                $(SRC_DIR)/specialComponents/ANDComponent.cpp	\
                 $(SRC_DIR)/specialComponents/True.cpp	\
                 $(SRC_DIR)/specialComponents/False.cpp	\
                 $(SRC_DIR)/specialComponents/Clock.cpp	\

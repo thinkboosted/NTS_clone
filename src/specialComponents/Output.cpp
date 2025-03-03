@@ -5,7 +5,7 @@
 ** Output
 */
 
-#include "../../include/specialComponents/Output.hpp"
+#include "Output.hpp"
 
 nts::OutputComponent::OutputComponent(const std::string &name) : AComponent(name)
 {
@@ -14,18 +14,27 @@ nts::OutputComponent::OutputComponent(const std::string &name) : AComponent(name
     this->setState(nts::UNDEFINED);
 }
 
+void nts::OutputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
+{
+    if (pin != 1)
+        throw std::invalid_argument("Invalid pin for output component");
+    _pins[0] = std::unique_ptr<nts::IComponent>(&other);
+    (void)otherPin;
+}
+
 void nts::OutputComponent::simulate()
 {
+    if (_pins[0])
+        _pins[0]->simulate();
 }
 
 void nts::OutputComponent::compute()
 {
-}
+    if (_pins[0])
+        setState(_pins[0]->getState());
+    else
+        setState(nts::UNDEFINED);
 
-void nts::OutputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
-{
-    (void)otherPin;
-    if (pin != 1)
-        throw std::out_of_range("Error: Pin index out of range");
-    this->_pins[pin - 1].reset(&other);
+    std::cout << getName() << "=" << (getState() == nts::TRUE ? "1" :
+                                    getState() == nts::FALSE ? "0" : "U") << std::endl;
 }
