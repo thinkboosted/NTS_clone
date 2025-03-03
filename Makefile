@@ -17,7 +17,7 @@ TEST_EXEC := $(BUILD_DIR)/$(TEST_NAME)
 
 SRC 	= 		$(SRC_DIR)/Parser.cpp	\
 
-MAIN 	= 		$(SRC_DIR)/main/main.cpp
+MAIN 	= 		$(SRC_DIR)/main.cpp
 
 TEST_SRC = test.cpp \
 
