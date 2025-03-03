@@ -6,8 +6,41 @@
 */
 
 #include <iostream>
+#include <memory>
+#include "../include/Factory.hpp"
+#include "../include/Circuit.hpp"
 
-int main()
+void parse_smth()
 {
-    return 0;
+	nts::Factory factory;
+    nts::Circuit circuit;
+    circuit.addComponent("clock", "c");
+    circuit.addComponent("output", "s");
+}
+
+static int start(int ac, char **argv)
+{
+	// Parser parser;
+	// Circuit circuit;
+	int	ret = 0;
+
+	try {
+		// parser.parse(argv[1], circuit);
+		// parser.parse_args(ac, argv, circuit);
+        // call loop shell
+        parse_smth();
+	}
+    catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+        ret = 84;
+    }
+	return ret;
+}
+
+int main(int ac, char **argv)
+{
+	if (ac < 2)
+		return 84;
+	else
+		return start(ac, argv);
 }
