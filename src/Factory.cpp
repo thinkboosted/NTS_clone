@@ -13,50 +13,50 @@
 #include "../include/specialComponents/True.hpp"
 #include "../include/specialComponents/False.hpp"
 
-std::unique_ptr<nts::IComponent> nts::Factory::createComponent(const std::string &type) const
+std::unique_ptr<nts::IComponent> nts::Factory::createComponent(const std::string &type, const std::string &name) const
 {
     if (type == "false")
-        return createFalse();
+        return createFalse(name);
     else if (type == "true")
-        return createTrue();
+        return createTrue(name);
     else if (type == "input")
-        return createInput();
+        return createInput(name);
     else if (type == "output")
-        return createOutput();
+        return createOutput(name);
     else if (type == "clock")
-        return createClock();
+        return createClock(name);
     else if (type == "and")
-        return createAND();
+        return createAND(name);
     else
         return nullptr;
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createFalse() const
+std::unique_ptr<nts::IComponent> nts::Factory::createFalse(const std::string &name) const
 {
-    return std::make_unique<nts::FalseComponent>("false");
+    return std::make_unique<nts::FalseComponent>(name);
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createTrue() const
+std::unique_ptr<nts::IComponent> nts::Factory::createTrue(const std::string &name) const
 {
-    return std::make_unique<nts::TrueComponent>("true");
+    return std::make_unique<nts::TrueComponent>(name);
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createInput() const
+std::unique_ptr<nts::IComponent> nts::Factory::createInput(const std::string &name) const
 {
-    return std::make_unique<nts::InputComponent>("input");
+    return std::make_unique<nts::InputComponent>(name);
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createOutput() const
+std::unique_ptr<nts::IComponent> nts::Factory::createOutput(const std::string &name) const
 {
-    return std::make_unique<nts::OutputComponent>("output");
+    return std::make_unique<nts::OutputComponent>(name);
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createClock() const
+std::unique_ptr<nts::IComponent> nts::Factory::createClock(const std::string &name) const
 {
-    return std::make_unique<nts::ClockComponent>("clock");
+    return std::make_unique<nts::ClockComponent>(name);
 }
 
-std::unique_ptr<nts::IComponent> nts::Factory::createAND() const
+std::unique_ptr<nts::IComponent> nts::Factory::createAND(const std::string &name) const
 {
-    return std::make_unique<nts::ANDComponent>("AND");
+    return std::make_unique<nts::ANDComponent>(name);
 }
