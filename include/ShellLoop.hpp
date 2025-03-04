@@ -20,7 +20,6 @@ class ShellLoop {
         Circuit &_circuit;
         std::map<std::string, void (ShellLoop::*)(Circuit &)> _commands;
         void exit(Circuit &circuit);
-        void dump(Circuit &circuit);
         void display(Circuit &circuit);
         void simulate(Circuit &circuit);
         void loop(Circuit &circuit);

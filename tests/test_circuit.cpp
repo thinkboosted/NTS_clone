@@ -35,7 +35,6 @@ Test(circuit, simulate_display_dump) {
     circuit.addComponent("output", "Out1");
     circuit.simulate();
     circuit.display();
-    circuit.dump();
 }
 
 // Test setComponentState and compute.

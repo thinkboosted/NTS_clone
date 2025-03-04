@@ -79,6 +79,32 @@ static int start(int ac, char **argv)
         }
         displayComponents(content);
         displayLinks(content);
+        for (const auto& line : content) {
+            if (line == ".chipsets:") {
+                continue;
+            }
+            if (line == ".links:") {
+                break;
+            }
+            std::istringstream iss(line);
+            std::string type, name;
+            iss >> type >> name;
+            circuit.addComponent(type, name);
+        }
+        for (const auto& line : content) {
+            if (line == ".links:") {
+                continue;
+            }
+            std::regex linkRegex("^\\s*([a-zA-Z0-9_]+):([0-9]+)\\s+([a-zA-Z0-9_]+):([0-9]+)\\s*$");
+            std::smatch matches;
+            if (std::regex_match(line, matches, linkRegex)) {
+                std::string comp1 = matches[1];
+                std::string comp2 = matches[3];
+                int pin1 = std::stoi(matches[2]);
+                int pin2 = std::stoi(matches[4]);
+                circuit.linkComponents(comp1, comp2, pin1, pin2);
+            }
+        }
 		nts::ShellLoop shell(circuit);
 		shell.run();
     }

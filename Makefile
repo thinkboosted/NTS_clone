@@ -15,21 +15,23 @@ COVERAGE_DIR := $(BUILD_DIR)/coverage
 TEST_EXEC := $(BUILD_DIR)/$(TEST_NAME)
 
 
-SRC 	= 		$(SRC_DIR)/Parser.cpp	\
-                $(SRC_DIR)/Circuit.cpp	\
-                $(SRC_DIR)/Factory.cpp	\
-                $(SRC_DIR)/AComponent.cpp	\
-                $(SRC_DIR)/specialComponents/Output.cpp	\
-                $(SRC_DIR)/specialComponents/Input.cpp	\
-                $(SRC_DIR)/specialComponents/ANDComponent.cpp	\
-                $(SRC_DIR)/specialComponents/True.cpp	\
-                $(SRC_DIR)/specialComponents/False.cpp	\
-                $(SRC_DIR)/specialComponents/Clock.cpp	\
+SRC 	= 		$(SRC_DIR)/Parser.cpp					\
+				$(SRC_DIR)/Factory.cpp					\
+				$(SRC_DIR)/specialComponents/Input.cpp	\
+				$(SRC_DIR)/specialComponents/Output.cpp	\
+				$(SRC_DIR)/specialComponents/Clock.cpp	\
+				$(SRC_DIR)/specialComponents/True.cpp	\
+				$(SRC_DIR)/specialComponents/False.cpp	\
+				$(SRC_DIR)/ShellLoop.cpp				\
+				$(SRC_DIR)/AComponent.cpp		\
+				$(SRC_DIR)/specialComponents/ANDComponent.cpp \
+				$(SRC_DIR)/Circuit.cpp
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
-TEST_SRC = 		$(TEST_DIR)/test.cpp \
-				$(TEST_DIR)/test_circuit.cpp
+TEST_SRC = 		tests/test.cpp \
+				tests/test_special_components.cpp \
+				tests/test_circuit.cpp
 
 
 OBJ = $(SRC:.cpp=.o)
