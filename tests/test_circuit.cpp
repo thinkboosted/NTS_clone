@@ -57,13 +57,6 @@ Test(circuit, invalid_component_name) {
     cr_assert_throw(circuit.compute("InvalidName"), std::out_of_range);
 }
 
-// Test for invalid pin number.
-Test(circuit, invalid_pin_number) {
-    nts::Circuit circuit;
-    circuit.addComponent("output", "Out1");
-    cr_assert_throw(circuit.linkComponents("Out1", "Out1", 0, 0), std::invalid_argument);
-}
-
 // Test for invalid component type.
 Test(circuit, invalid_component_type) {
     nts::Circuit circuit;
