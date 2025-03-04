@@ -19,7 +19,6 @@ namespace nts
             void linkComponents(const std::string &name1, const std::string &name2, std::size_t pin1, std::size_t pin2) const;
             void simulate() const;
             void display() const;
-            void dump() const;
             nts::Tristate compute(const std::string &name) const;
 
         private:

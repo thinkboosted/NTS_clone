@@ -28,7 +28,8 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
-TEST_SRC = test.cpp \
+TEST_SRC = tests/test.cpp \
+			tests/test_special_components.cpp
 
 
 OBJ = $(SRC:.cpp=.o)
@@ -49,7 +50,7 @@ $(NAME): $(OBJ) $(OBJ_MAIN)
 
 build_test:
 	@mkdir -p $(BUILD_DIR)
-	$(CXX) $(TEST_FLAGS) $(SRC) $(TEST_DIR)/$(TEST_SRC) -o $(TEST_EXEC)
+	$(CXX) $(TEST_FLAGS) $(SRC) $(TEST_SRC) -o $(TEST_EXEC)
 
 clean:
 	@rm -f $(OBJ)
