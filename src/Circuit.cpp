@@ -6,10 +6,11 @@
 */
 
 #include "../include/Circuit.hpp"
+#include "Circuit.hpp"
 
 void nts::Circuit::addComponent(const std::string &type, const std::string &name)
 {
-    _components[name] = _factory.createComponent(type);
+    _components[name] = _factory.createComponent(type, name);
 
     if (type == "output") {
         _outputs.push_back(dynamic_cast<nts::OutputComponent*>(_components[name].get()));
@@ -32,18 +33,52 @@ void nts::Circuit::simulate() const
     }
 }
 
-void nts::Circuit::display() const
+void nts::Circuit::displayComponentState(const std::string& name, nts::Tristate state) const
 {
-    for (const auto &output : _outputs) {
-        output->compute();
+    char stateChar = 'U';
+    if (state == nts::TRUE)
+        stateChar = '1';
+    else if (state == nts::FALSE)
+        stateChar = '0';
+
+    std::cout << "  " << name << ": " << stateChar << std::endl;
+}
+
+void nts::Circuit::displayInputs() const
+{
+    for (const auto &component : _components)
+    {
+        auto input = dynamic_cast<nts::InputComponent *>(component.second.get());
+        if (input != nullptr)
+        {
+            displayComponentState(input->getName(), input->getState());
+        }
+        auto clock = dynamic_cast<nts::ClockComponent *>(component.second.get());
+        if (clock != nullptr)
+        {
+            displayComponentState(clock->getName(), clock->getState());
+        }
+        auto trueComponent = dynamic_cast<nts::TrueComponent *>(component.second.get());
+        if (trueComponent != nullptr)
+        {
+            displayComponentState(trueComponent->getName(), trueComponent->getState());
+        }
+        auto falseComponent = dynamic_cast<nts::FalseComponent *>(component.second.get());
+        if (falseComponent != nullptr)
+        {
+            displayComponentState(falseComponent->getName(), falseComponent->getState());
+        }
     }
 }
 
-void nts::Circuit::dump() const
+void nts::Circuit::display() const
 {
-    for (const auto &component : _components) {
-        std::cout << component.first << ":" << std::endl;
-        component.second->compute();
+    std::cout << "tick: " << _tick << std::endl;
+    std::cout << "input(s):" << std::endl;
+    displayInputs();
+    std::cout << "output(s):" << std::endl;
+    for (const auto &output : _outputs) {
+        displayComponentState(output->getName(), output->getState());
     }
 }
 
