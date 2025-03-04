@@ -24,7 +24,8 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 				$(SRC_DIR)/specialComponents/False.cpp	\
 				$(SRC_DIR)/ShellLoop.cpp				\
 				$(SRC_DIR)/AComponent.cpp		\
-				$(SRC_DIR)/specialComponents/ANDComponent.cpp
+				$(SRC_DIR)/specialComponents/ANDComponent.cpp \
+				$(SRC_DIR)/Circuit.cpp
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
