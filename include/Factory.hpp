@@ -12,16 +12,16 @@ namespace nts
         public:
             ~Factory() = default;
 
-            std::unique_ptr<nts::IComponent> createComponent(const std::string &type) const;
+            std::unique_ptr<nts::IComponent> createComponent(const std::string &type, const std::string &name) const;
 
         private:
-            std::unique_ptr<nts::IComponent> createFalse() const;
-            std::unique_ptr<nts::IComponent> createTrue() const;
-            std::unique_ptr<nts::IComponent> createInput() const;
-            std::unique_ptr<nts::IComponent> createOutput() const;
-            std::unique_ptr<nts::IComponent> createClock() const;
+        std::unique_ptr<nts::IComponent> createFalse(const std::string &name) const;
+        std::unique_ptr<nts::IComponent> createTrue(const std::string &name) const;
+        std::unique_ptr<nts::IComponent> createInput(const std::string &name) const;
+        std::unique_ptr<nts::IComponent> createOutput(const std::string &name) const;
+        std::unique_ptr<nts::IComponent> createClock(const std::string &name) const;
 
-            std::unique_ptr<nts::IComponent> createAND() const;
+            std::unique_ptr<nts::IComponent> createAND(const std::string &name) const;
             std::unique_ptr<nts::IComponent> createOR() const;
             std::unique_ptr<nts::IComponent> createNOR() const;
             std::unique_ptr<nts::IComponent> createXOR() const;

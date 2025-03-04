@@ -5,7 +5,7 @@
 ** Clock
 */
 
-#include "../../include/specialComponents/Clock.hpp"
+#include "Clock.hpp"
 
 nts::ClockComponent::ClockComponent(const std::string &name) : AComponent(name)
 {

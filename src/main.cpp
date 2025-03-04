@@ -70,8 +70,8 @@ static int start(int ac, char **argv)
 		Parser myParser(argv[1]);
         std::vector<std::string> content = myParser.parse();
 
-        std::cout << "Circuit successfully parsed!" << std::endl;
-        std::cout << "Lines in file: " << content.size() << std::endl;
+    std::cout << "Circuit successfully parsed!" << std::endl;
+    std::cout << "Lines in file: " << content.size() << std::endl;
 
         std::cout << "\n=== RAW CONTENT ===\n";
         for (size_t i = 0; i < content.size(); i++) {
