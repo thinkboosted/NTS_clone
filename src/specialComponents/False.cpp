@@ -31,8 +31,3 @@ void nts::FalseComponent::setLink(std::size_t pin, nts::IComponent &other, std::
     (void)pin;
     (void)other;
 }
-
-void nts::FalseComponent::setState(nts::Tristate state)
-{
-    (void)state;
-}
