@@ -14,16 +14,18 @@ nts::OutputComponent::OutputComponent(const std::string &name) : AComponent(name
     this->setState(nts::UNDEFINED);
 }
 
-void nts::OutputComponent::simulate()
+void nts::OutputComponent::simulate(std::size_t tick)
 {
+    (void)tick;
+    if (this->_pins[0] == nullptr)
+        throw std::invalid_argument("Pin not linked");
+    this->setState(this->_pins[0]->compute(tick));
 }
 
-void nts::OutputComponent::compute()
+nts::Tristate nts::OutputComponent::compute(std::size_t tick)
 {
-    if (this->_pins[0] != nullptr) {
-        this->_pins[0]->compute();
-        this->setState(this->_pins[0]->getState());
-    }
+    this->simulate(tick);
+    return this->getState();
 }
 
 void nts::OutputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)

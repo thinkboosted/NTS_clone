@@ -18,15 +18,17 @@ namespace nts
 
             void addComponent(const std::string &type, const std::string &name);
             void linkComponents(const std::string &name1, const std::string &name2, std::size_t pin1, std::size_t pin2) const;
-            void simulate() const;
+            void simulate(size_t tick) const;
             void display() const;
             nts::Tristate compute(const std::string &name) const;
             void setComponentState(const std::string &name, nts::Tristate state);
+            size_t getTick() const { return _tick; }
 
         private:
 		    std::vector<nts::OutputComponent*> _outputs;
             std::unordered_map<std::string, std::unique_ptr<nts::IComponent>> _components;
             Factory _factory;
+            size_t _tick;
     };
 }
 #endif // CIRCUIT_HPP

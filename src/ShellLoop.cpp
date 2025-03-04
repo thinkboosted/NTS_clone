@@ -35,13 +35,13 @@ void nts::ShellLoop::display(Circuit &circuit)
 void nts::ShellLoop::simulate(Circuit &circuit)
 {
     std::cout << "Simulating circuit" << std::endl;
-    circuit.simulate();
+    circuit.simulate(circuit.getTick() + 1);
 }
 
 void nts::ShellLoop::loop(Circuit &circuit)
 {
     while (_running) {
-        circuit.simulate();
+        circuit.simulate(circuit.getTick() + 1);
         circuit.display();
     }
 }

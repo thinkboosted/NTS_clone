@@ -11,21 +11,29 @@ namespace nts
         this->setState(nts::UNDEFINED);
     }
 
-    void ANDComponent::simulate()
-    {
-        // Implementation of simulate
-    }
-
-    void ANDComponent::compute()
-    {
-        // Implementation of compute
-    }
-
     void ANDComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
     {
         (void)otherPin;
-        (void)pin;
-        (void)other;
+        if (pin == 1 || pin == 2)
+            this->_pins[pin - 1].reset(&other);
+        else
+            throw std::invalid_argument("Pin does not exist");
     }
 
+    void ANDComponent::simulate(std::size_t tick)
+    {
+        (void)tick;
+        if (this->_pins[0] == nullptr || this->_pins[1] == nullptr)
+            throw std::invalid_argument("Pin not linked");
+        if (this->_pins[0]->compute(tick) == nts::TRUE && this->_pins[1]->compute(tick) == nts::TRUE)
+            this->setState(nts::TRUE);
+        else
+            this->setState(nts::FALSE);
+    }
+
+    nts::Tristate ANDComponent::compute(std::size_t tick)
+    {
+        this->simulate(tick);
+        return this->getState();
+    }
 }

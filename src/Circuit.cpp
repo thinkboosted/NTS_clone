@@ -25,10 +25,10 @@ void nts::Circuit::linkComponents(const std::string &name1, const std::string &n
     component2->setLink(pin2, *component1, pin1);
 }
 
-void nts::Circuit::simulate() const
+void nts::Circuit::simulate(size_t tick) const
 {
     for (const auto &pair : _components) {
-        pair.second->simulate();
+        pair.second->simulate(tick);
     }
 }
 
@@ -39,7 +39,7 @@ void nts::Circuit::display() const
     std::cout << "output(s):" << std::endl;
     for (const auto &component : _components) {
         std::cout << component.first << ":" << std::endl;
-        component.second->compute();
+        component.second->compute(_tick);
     }
 }
 

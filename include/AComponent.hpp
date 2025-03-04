@@ -13,13 +13,12 @@ namespace nts
             AComponent(const std::string &name);
             virtual ~AComponent() = default;
 
-            virtual void simulate() {};
-            virtual void compute() = 0;
+            virtual void simulate(std::size_t tick);
+            virtual nts::Tristate compute(std::size_t tick);
+            virtual void setState(nts::Tristate state) override;
             virtual void setLink(std::size_t pin, nts::IComponent &other, std::size_t) = 0;
-
+            virtual nts::Tristate getState() const override { return _state; }
             const std::string &getName() const { return _name; }
-            nts::Tristate getState() const override { return _state; }
-            void setState(nts::Tristate state) override { this->_state = state; }
 
         protected:
             const std::string _name;

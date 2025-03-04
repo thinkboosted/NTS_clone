@@ -14,12 +14,18 @@ nts::InputComponent::InputComponent(const std::string &name) : AComponent(name)
     this->setState(nts::UNDEFINED);
 }
 
-void nts::InputComponent::simulate()
+void nts::InputComponent::simulate(std::size_t tick)
 {
+    (void)tick;
+    if (this->_pins[0] == nullptr)
+        throw std::invalid_argument("Pin not linked");
+    this->setState(this->_pins[0]->compute(tick));
 }
 
-void nts::InputComponent::compute()
+nts::Tristate nts::InputComponent::compute(std::size_t tick)
 {
+    this->simulate(tick);
+    return this->getState();
 }
 
 void nts::InputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)

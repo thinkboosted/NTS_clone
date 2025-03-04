@@ -14,12 +14,15 @@ nts::TrueComponent::TrueComponent(const std::string &name) : AComponent(name)
     this->setState(nts::TRUE);
 }
 
-void nts::TrueComponent::simulate()
+void nts::TrueComponent::simulate(std::size_t tick)
 {
+    (void)tick;
 }
 
-void nts::TrueComponent::compute()
+nts::Tristate nts::TrueComponent::compute(std::size_t tick)
 {
+    (void)tick;
+    return this->getState();
 }
 
 void nts::TrueComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
@@ -27,11 +30,6 @@ void nts::TrueComponent::setLink(std::size_t pin, nts::IComponent &other, std::s
     (void)otherPin;
     (void)pin;
     (void)other;
-}
-
-nts::Tristate nts::TrueComponent::getState() const
-{
-    return nts::TRUE;
 }
 
 void nts::TrueComponent::setState(nts::Tristate state)

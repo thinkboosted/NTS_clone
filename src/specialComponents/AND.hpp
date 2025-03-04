@@ -13,8 +13,8 @@ namespace nts
             ANDComponent(const std::string &name = "AND");
             ~ANDComponent() = default;
             void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin) override;
-            void simulate() override;
-            void compute() override;
+            void simulate(std::size_t tick) override;
+            nts::Tristate compute(std::size_t tick) override;
     };
 }
 
