@@ -8,6 +8,7 @@
 #include "Factory.hpp"
 #include "./specialComponents/Output.hpp"
 #include <vector>
+#include <iostream>
 
 namespace nts
 {
@@ -15,11 +16,12 @@ namespace nts
         public:
             ~Circuit() = default;
 
-            void addComponent(const std::string &type, const std::string &name) const;
+            void addComponent(const std::string &type, const std::string &name);
             void linkComponents(const std::string &name1, const std::string &name2, std::size_t pin1, std::size_t pin2) const;
             void simulate() const;
             void display() const;
             nts::Tristate compute(const std::string &name) const;
+            void setComponentState(const std::string &name, nts::Tristate state);
 
         private:
 		    std::vector<nts::OutputComponent*> _outputs;
