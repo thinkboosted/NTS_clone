@@ -94,8 +94,14 @@ nts::Tristate nts::Circuit::compute(const std::string &name) const
 
 void nts::Circuit::linkComponents(const std::string &name1, const std::string &name2, std::size_t pin1, std::size_t pin2) const
 {
-    _components.at(name1)->setLink(pin1, _components.at(name2), pin2);
-    _components.at(name2)->setLink(pin2, _components.at(name1), pin1);
+    auto comp1 = _components.at(name1);
+    auto comp2 = _components.at(name2);
+
+    if (!comp1 || !comp2)
+        throw std::runtime_error("Cannot link with null component: " + name1 + " or " + name2);
+
+    comp1->setLink(pin1, comp2, pin2);
+    comp2->setLink(pin2, comp1, pin1);
 }
 
 void nts::Circuit::setInputState(nts::InputComponent &input, nts::Tristate state) const
