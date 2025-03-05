@@ -52,7 +52,12 @@ void nts::ShellLoop::run()
 
     while (_running) {
         std::cout << "> ";
-        std::cin >> input;
+        if (!std::getline(std::cin, input)) {
+            std::cout << std::endl;
+            break;
+        }
+        if (input.empty())
+            continue;
         if (_commands.find(input) != _commands.end())
             (this->*_commands[input])(_circuit);
         else if (input == "exit")
