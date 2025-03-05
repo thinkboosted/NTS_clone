@@ -5,7 +5,7 @@
 ** Input
 */
 
-#include "../../include/specialComponents/Input.hpp"
+#include "Input.hpp"
 
 nts::InputComponent::InputComponent(const std::string &name) : AComponent(name)
 {
@@ -24,8 +24,8 @@ void nts::InputComponent::compute()
 
 void nts::InputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
 {
-    (void)otherPin;
     if (pin != 1)
-        throw std::out_of_range("Error: Pin index out of range");
-    this->_pins[pin - 1].reset(&other);
+        throw std::invalid_argument("Invalid pin for input component");
+    _pins[0] = std::unique_ptr<nts::IComponent>(&other);
+    (void)otherPin;
 }

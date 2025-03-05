@@ -4,6 +4,7 @@
 #include <string>
 #include <memory>
 #include "../AComponent.hpp"
+#include <iostream>
 
 namespace nts
 {
