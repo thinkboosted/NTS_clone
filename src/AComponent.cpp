@@ -9,12 +9,9 @@
 
 namespace nts
 {
-    AComponent::AComponent(const std::string &name, std::size_t nbPins) : _name(name), _lastTick(0), _state(nts::UNDEFINED)
+    AComponent::AComponent(const std::string &name, std::size_t nbPins) : _name(name), _lastTick(0), _nbPins(nbPins), _state(nts::UNDEFINED)
     {
-        _pins = new std::shared_ptr<nts::IComponent>[nbPins];
-        for (std::size_t i = 0; i < nbPins; i++) {
-            _pins[i] = nullptr;
-        }
+        _pins = new std::weak_ptr<nts::IComponent>[nbPins];
     }
 
     AComponent::~AComponent()

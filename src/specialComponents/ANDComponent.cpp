@@ -1,3 +1,10 @@
+/*
+** EPITECH PROJECT, 2025
+** NTS_clone
+** File description:
+** ANDComponent
+*/
+
 #include "AND.hpp"
 #include <iostream>
 
@@ -16,7 +23,7 @@ namespace nts
     {
         (void)otherPin;
         if (pin >= 1 && pin <= 3)
-            this->_pins[pin - 1] = other;
+            this->_pins[pin - 1] = other; // This stores a weak_ptr now
         else
             throw std::invalid_argument("Pin does not exist");
     }
@@ -26,9 +33,13 @@ namespace nts
         if (tick == this->_lastTick)
             return;
         this->_lastTick = tick;
-        if (this->_pins[0] == nullptr || this->_pins[1] == nullptr)
-            throw std::invalid_argument("Pin not linked");
-        if (this->_pins[0]->compute(tick) == nts::TRUE && this->_pins[1]->compute(tick) == nts::TRUE)
+
+        auto pin0 = this->_pins[0].lock();
+        auto pin1 = this->_pins[1].lock();
+
+        if (!pin0 || !pin1)
+            throw std::invalid_argument("Pin not linked or component destroyed");
+        if (pin0->compute(tick) == nts::TRUE && pin1->compute(tick) == nts::TRUE)
             this->setState(nts::TRUE);
         else
             this->setState(nts::FALSE);

@@ -17,15 +17,16 @@ void nts::ClockComponent::setLink(std::size_t pin, std::shared_ptr<nts::ICompone
 {
     (void)otherPin;
     if (pin == 1)
-        this->_pins[pin - 1] = other;
+        this->_pins[pin - 1] = other; // This stores a weak_ptr now
     else
         throw std::invalid_argument("Pin does not exist");
 }
 
 void nts::ClockComponent::simulate(std::size_t tick)
 {
-    if (this->_pins[0] == nullptr)
-        throw std::invalid_argument("Pin not linked");
+    auto pin = this->_pins[0].lock();
+    if (!pin)
+        throw std::invalid_argument("Pin not linked or component destroyed");
     if (tick == this->_lastTick) {
         std::cerr << "ClockComponent::simulate called twice with the same tick" << std::endl;
         return;
