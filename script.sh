@@ -61,6 +61,11 @@ for file in $NTS_FILES; do
         echo "File: $file - TIMEOUT" >> "$ERROR_LOG"
         echo "Output: $output" >> "$ERROR_LOG"
         ((FAIL_COUNT++))
+    elif [ $exit_code -eq 84 ]; then
+        echo -e "${RED}ERROR${RESET}"
+        echo "File: $file - ERROR" >> "$ERROR_LOG"
+        echo "Output: $output" >> "$ERROR_LOG"
+        ((FAIL_COUNT++))
     else
         echo -e "${RED}CRASH (exit code $exit_code)${RESET}"
         echo "File: $file - EXIT CODE $exit_code" >> "$ERROR_LOG"
