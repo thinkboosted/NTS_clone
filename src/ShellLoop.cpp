@@ -28,13 +28,11 @@ void nts::ShellLoop::exit(Circuit &circuit)
 
 void nts::ShellLoop::display(Circuit &circuit)
 {
-    std::cout << "Displaying circuit" << std::endl;
     circuit.display();
 }
 
 void nts::ShellLoop::simulate(Circuit &circuit)
 {
-    std::cout << "Simulating circuit" << std::endl;
     circuit.simulate(circuit.getTick() + 1);
 }
 
