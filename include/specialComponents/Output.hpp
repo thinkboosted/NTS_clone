@@ -13,7 +13,7 @@ namespace nts
             OutputComponent(const std::string &name);
             ~OutputComponent() = default;
 
-            void setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin) override;
+            void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin) override;
             void simulate(std::size_t tick) override;
             nts::Tristate compute(std::size_t tick) override;
     };

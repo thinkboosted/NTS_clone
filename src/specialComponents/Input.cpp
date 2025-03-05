@@ -6,11 +6,12 @@
 */
 
 #include "../../include/specialComponents/Input.hpp"
+#include "../../include/specialComponents/True.hpp"
+#include "../../include/specialComponents/False.hpp"
+#include "../../include/specialComponents/Undefined.hpp"
 
-nts::InputComponent::InputComponent(const std::string &name) : AComponent(name)
+nts::InputComponent::InputComponent(const std::string &name) : AComponent(name, 1)
 {
-    this->_pins = new std::unique_ptr<nts::IComponent>[1];
-    this->_pins[0] = nullptr;
     this->setState(nts::UNDEFINED);
 }
 
@@ -28,10 +29,11 @@ nts::Tristate nts::InputComponent::compute(std::size_t tick)
     return this->getState();
 }
 
-void nts::InputComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
+void nts::InputComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
 {
     (void)otherPin;
-    if (pin != 1)
-        throw std::out_of_range("Error: Pin index out of range");
-    this->_pins[pin - 1].reset(&other);
+    if (pin == 1)
+        this->_pins[pin - 1] = other;
+    else
+        throw std::invalid_argument("Pin does not exist");
 }

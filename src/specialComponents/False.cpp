@@ -7,10 +7,8 @@
 
 #include "../../include/specialComponents/False.hpp"
 
-nts::FalseComponent::FalseComponent(const std::string &name) : AComponent(name)
+nts::FalseComponent::FalseComponent(const std::string &name) : AComponent(name, 0)
 {
-    this->_pins = new std::unique_ptr<nts::IComponent>[1];
-    this->_pins[0] = nullptr;
     this->setState(nts::FALSE);
 }
 
@@ -25,7 +23,7 @@ nts::Tristate nts::FalseComponent::compute(std::size_t tick)
     return this->getState();
 }
 
-void nts::FalseComponent::setLink(std::size_t pin, nts::IComponent &other, std::size_t otherPin)
+void nts::FalseComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
 {
     (void)otherPin;
     (void)pin;
