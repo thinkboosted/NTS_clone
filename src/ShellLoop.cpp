@@ -60,7 +60,5 @@ void nts::ShellLoop::run()
             (this->*_commands[input])(_circuit);
         else if (input == "exit")
             exit(_circuit);
-        else
-            std::cout << "Command not found" << std::endl;
     }
 }
