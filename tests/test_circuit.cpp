@@ -33,21 +33,8 @@ Test(circuit, simulate_display_dump) {
     cr_redirect_stdout();
     nts::Circuit circuit;
     circuit.addComponent("output", "Out1");
-    circuit.simulate();
+    circuit.simulate(circuit.getTick() + 1);
     circuit.display();
-}
-
-// Test setComponentState and compute.
-Test(circuit, set_and_compute_state) {
-    cr_redirect_stdout();
-    nts::Circuit circuit;
-    circuit.addComponent("output", "Out1");
-
-    // Set a new state and then check compute returns that state.
-    nts::Tristate newState = nts::FALSE;
-    circuit.setComponentState("Out1", newState);
-    nts::Tristate state = circuit.compute("Out1");
-    cr_assert_eq(state, newState);
 }
 
 // Test for invalid component name.

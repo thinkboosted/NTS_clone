@@ -8,9 +8,8 @@
 #include "../../include/specialComponents/Clock.hpp"
 #include <iostream>
 
-nts::ClockComponent::ClockComponent(const std::string &name) : AComponent(name, 1)
+nts::ClockComponent::ClockComponent(const std::string &name) : InputComponent(name)
 {
-    this->setState(nts::UNDEFINED);
     this->_lastTick = 0;
 }
 

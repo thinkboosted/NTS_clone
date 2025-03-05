@@ -4,11 +4,12 @@
 #include <string>
 #include <memory>
 #include "../AComponent.hpp"
+#include "Input.hpp"
 #include <iostream>
 
 namespace nts
 {
-    class ClockComponent : public AComponent
+    class ClockComponent : public InputComponent
     {
         public:
             ClockComponent(const std::string &name);
