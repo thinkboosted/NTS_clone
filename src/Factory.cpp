@@ -14,57 +14,57 @@
 #include "../include/specialComponents/False.hpp"
 #include "../include/specialComponents/Undefined.hpp"
 
-std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string &type) const
+std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string &type, const std::string &name) const
 {
     if (type == "false")
-        return createFalse();
+        return createFalse(name);
     else if (type == "true")
-        return createTrue();
+        return createTrue(name);
     else if (type == "input")
-        return createInput();
+        return createInput(name);
     else if (type == "output")
-        return createOutput();
+        return createOutput(name);
     else if (type == "clock")
-        return createClock();
+        return createClock(name);
     else if (type == "and")
-        return createAND();
+        return createAND(name);
     else if (type == "undefined")
-        return createUndefined();
+        return createUndefined(name);
     else
         return nullptr;
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createUndefined() const
+std::shared_ptr<nts::IComponent> nts::Factory::createUndefined(const std::string &name) const
 {
-    return std::make_shared<nts::UndefinedComponent>("undefined");
+    return std::make_shared<nts::UndefinedComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createFalse() const
+std::shared_ptr<nts::IComponent> nts::Factory::createFalse(const std::string &name) const
 {
-    return std::make_shared<nts::FalseComponent>("false");
+    return std::make_shared<nts::FalseComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createTrue() const
+std::shared_ptr<nts::IComponent> nts::Factory::createTrue(const std::string &name) const
 {
-    return std::make_shared<nts::TrueComponent>("true");
+    return std::make_shared<nts::TrueComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createInput() const
+std::shared_ptr<nts::IComponent> nts::Factory::createInput(const std::string &name) const
 {
-    return std::make_shared<nts::InputComponent>("input");
+    return std::make_shared<nts::InputComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createOutput() const
+std::shared_ptr<nts::IComponent> nts::Factory::createOutput(const std::string &name) const
 {
-    return std::make_shared<nts::OutputComponent>("output");
+    return std::make_shared<nts::OutputComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createClock() const
+std::shared_ptr<nts::IComponent> nts::Factory::createClock(const std::string &name) const
 {
-    return std::make_shared<nts::ClockComponent>("clock");
+    return std::make_shared<nts::ClockComponent>(name);
 }
 
-std::shared_ptr<nts::IComponent> nts::Factory::createAND() const
+std::shared_ptr<nts::IComponent> nts::Factory::createAND(const std::string &name) const
 {
-    return std::make_shared<nts::ANDComponent>("and");
+    return std::make_shared<nts::ANDComponent>(name);
 }

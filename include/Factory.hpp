@@ -12,20 +12,20 @@ namespace nts
         public:
             ~Factory() = default;
 
-            std::shared_ptr<nts::IComponent> createComponent(const std::string &type) const;
+            std::shared_ptr<nts::IComponent> createComponent(const std::string &type, const std::string &name) const;
 
         private:
-            std::shared_ptr<nts::IComponent> createUndefined() const;
-            std::shared_ptr<nts::IComponent> createFalse() const;
-            std::shared_ptr<nts::IComponent> createTrue() const;
-            std::shared_ptr<nts::IComponent> createInput() const;
-            std::shared_ptr<nts::IComponent> createOutput() const;
-            std::shared_ptr<nts::IComponent> createClock() const;
+            std::shared_ptr<nts::IComponent> createUndefined(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createFalse(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createTrue(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createInput(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createOutput(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createClock(const std::string &name) const;
 
-            std::shared_ptr<nts::IComponent> createAND() const;
-            std::shared_ptr<nts::IComponent> createOR() const;
-            std::shared_ptr<nts::IComponent> createNOR() const;
-            std::shared_ptr<nts::IComponent> createXOR() const;
+            std::shared_ptr<nts::IComponent> createAND(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createOR(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createNOR(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> createXOR(const std::string &name) const;
 
             std::shared_ptr<nts::IComponent> create4001() const;
             std::shared_ptr<nts::IComponent> create4011() const;

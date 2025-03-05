@@ -30,8 +30,9 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
-TEST_SRC = tests/test.cpp \
-			tests/test_special_components.cpp
+TEST_SRC = 		tests/test.cpp \
+				tests/test_special_components.cpp \
+				tests/test_circuit.cpp
 
 
 OBJ = $(SRC:.cpp=.o)
@@ -70,7 +71,7 @@ re: fclean all
 tests_run: clean build_test
 	$(TEST_EXEC)
 
-coverage:
+coverage: clean build_test
 	@mkdir -p $(COVERAGE_DIR)
 	@$(TEST_EXEC)
 	@gcovr -r . --exclude='tests/.*' --exclude='.*\.hpp'
