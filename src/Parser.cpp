@@ -33,7 +33,7 @@ std::vector<std::string> Parser::parse() const
     while (std::getline(file, line)) {
         size_t commentPos = line.find('#');
         if (commentPos != std::string::npos) {
-            line = line.substr(0, commentPos);
+            line.erase(commentPos);
         }
         line.erase(0, line.find_first_not_of(" \t\r\n"));
         line.erase(line.find_last_not_of(" \t\r\n") + 1);
