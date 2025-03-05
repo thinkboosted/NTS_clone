@@ -10,9 +10,8 @@
 #include "../include/IComponent.hpp"
 
 nts::Circuit::Circuit()
+    : _tick(0), _factory(nts::Factory())
 {
-    _factory = nts::Factory();
-    _tick = 0;
 }
 
 nts::Circuit::~Circuit()
