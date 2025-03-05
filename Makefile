@@ -47,6 +47,9 @@ all: $(NAME)
 $(NAME): $(OBJ) $(OBJ_MAIN)
 	$(CXX) $(OBJ) $(OBJ_MAIN) -o $(NAME)
 
+debug: CXXFLAGS += -DDEBUG
+debug: re
+
 %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
