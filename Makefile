@@ -39,7 +39,7 @@ OBJ = $(SRC:.cpp=.o)
 OBJ_MAIN = $(MAIN:.cpp=.o)
 
 CXX = g++
-CXXFLAGS = -Wall -Wextra -Werror -Iinclude -Itests -g
+CXXFLAGS = -Wall -Wextra -Werror -Iinclude -Itests
 TEST_FLAGS = $(CXXFLAGS) -std=c++17 --coverage -lcriterion
 
 
