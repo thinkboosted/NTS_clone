@@ -14,26 +14,29 @@
 #include <vector>
 
 #include <iostream>
+#include "./specialComponents/Input.hpp"
 
 namespace nts
 {
     class Circuit {
         public:
-            ~Circuit() = default;
-            Circuit() : _tick(0) {}
+            Circuit();
+            ~Circuit();
 
             void addComponent(const std::string &type, const std::string &name);
             void linkComponents(const std::string &name1, const std::string &name2, std::size_t pin1, std::size_t pin2) const;
-            void simulate() const;
+            void simulate(size_t tick);
             void display() const;
             void displayInputs() const;
             nts::Tristate compute(const std::string &name) const;
-            void setComponentState(const std::string &name, nts::Tristate state);
+            size_t getTick() const { return _tick; }
+            void setInputState(nts::InputComponent &input, nts::Tristate state) const;
+            std::shared_ptr<nts::IComponent> &getComponent(const std::string &name);
 
         private:
             mutable size_t _tick;
 		    std::vector<nts::OutputComponent*> _outputs;
-            std::unordered_map<std::string, std::unique_ptr<nts::IComponent>> _components;
+            std::unordered_map<std::string, std::shared_ptr<nts::IComponent>> _components;
             Factory _factory;
             void displayComponentState(const std::string& name, nts::Tristate state) const;
     };

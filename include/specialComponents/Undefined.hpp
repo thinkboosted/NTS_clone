@@ -1,18 +1,17 @@
-#ifndef FALSE_HPP
-#define FALSE_HPP
+#ifndef UNDEFINED_HPP
+#define UNDEFINED_HPP
 
 #include <string>
 #include <memory>
 #include "../AComponent.hpp"
-#include <iostream>
 
 namespace nts
 {
-    class FalseComponent : public AComponent
+    class UndefinedComponent : public AComponent
     {
         public:
-            FalseComponent(const std::string &name);
-            ~FalseComponent() = default;
+            UndefinedComponent(const std::string &name);
+            ~UndefinedComponent() = default;
 
             void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin) override;
             void simulate(std::size_t tick) override;
@@ -20,4 +19,4 @@ namespace nts
     };
 }
 
-#endif // FALSE_HPP
+#endif // UNDEFINED_HPP
