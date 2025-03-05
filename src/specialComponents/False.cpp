@@ -5,7 +5,7 @@
 ** False
 */
 
-#include "False.hpp"
+#include "../../include/specialComponents/False.hpp"
 
 nts::FalseComponent::FalseComponent(const std::string &name) : AComponent(name, 0)
 {

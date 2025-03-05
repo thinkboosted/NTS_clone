@@ -13,9 +13,6 @@ nts::Circuit::Circuit()
 {
     _factory = nts::Factory();
     _tick = 0;
-    _factory.createComponent("true");
-    _factory.createComponent("false");
-    _factory.createComponent("undefined");
 }
 
 nts::Circuit::~Circuit()
@@ -39,33 +36,6 @@ void nts::Circuit::simulate(size_t tick)
         pair->compute(tick);
     }
     this->_tick = tick;
-}
-
-void nts::Circuit::displayComponentState(const std::string& name, nts::Tristate state) const
-{
-    char stateChar = 'U';
-    if (state == nts::TRUE)
-        stateChar = '1';
-    else if (state == nts::FALSE)
-        stateChar = '0';
-
-    std::cout << "  " << name << ": " << stateChar << std::endl;
-}
-
-void nts::Circuit::displayInputs() const
-{
-    auto &component1 = _components.at(name1);
-    auto &component2 = _components.at(name2);
-
-    component1->setLink(pin1, *component2, pin2);
-    component2->setLink(pin2, *component1, pin1);
-}
-
-void nts::Circuit::simulate() const
-{
-    for (const auto &pair : _components) {
-        pair.second->simulate();
-    }
 }
 
 void nts::Circuit::displayComponentState(const std::string& name, nts::Tristate state) const
@@ -133,11 +103,11 @@ void nts::Circuit::setInputState(nts::InputComponent &input, nts::Tristate state
     if (state == input.getState())
         return;
     if (state == nts::UNDEFINED)
-        input.setLink(1, _factory.createComponent("undefined"), 1);
+        input.setLink(1, _factory.createComponent("undefined", "undefined"), 1);
     else if (state == nts::TRUE)
-        input.setLink(1, _factory.createComponent("true"), 1);
+        input.setLink(1, _factory.createComponent("true", "true"), 1);
     else
-        input.setLink(1, _factory.createComponent("false"), 1);
+        input.setLink(1, _factory.createComponent("false", "false"), 1);
 
     input.simulate(_tick);
 }

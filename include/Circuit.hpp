@@ -39,7 +39,6 @@ namespace nts
             std::unordered_map<std::string, std::shared_ptr<nts::IComponent>> _components;
             Factory _factory;
             void displayComponentState(const std::string& name, nts::Tristate state) const;
-            size_t _tick;
     };
 }
 #endif // CIRCUIT_HPP

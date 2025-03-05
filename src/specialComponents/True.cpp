@@ -5,7 +5,7 @@
 ** True
 */
 
-#include "True.hpp"
+#include "../../include/specialComponents/True.hpp"
 
 nts::TrueComponent::TrueComponent(const std::string &name) : AComponent(name, 0)
 {
