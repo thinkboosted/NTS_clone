@@ -52,7 +52,7 @@ debug: CXXFLAGS += -DDEBUG
 debug: re
 
 %.o: %.cpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) -O3 $(CXXFLAGS) -c $< -o $@
 
 build_test:
 	@mkdir -p $(BUILD_DIR)
