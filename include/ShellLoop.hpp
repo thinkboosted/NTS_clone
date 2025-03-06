@@ -18,6 +18,7 @@ class ShellLoop {
         void run();
 
     private:
+    protected:
         Circuit &_circuit;
         std::map<std::string, void (ShellLoop::*)(Circuit &)> _commands;
         bool setComponentValue(const std::string &input, Circuit &circuit);
@@ -26,6 +27,7 @@ class ShellLoop {
         void simulate(Circuit &circuit);
         void loop(Circuit &circuit);
         bool _running;
+
 };
 }
 
