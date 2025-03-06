@@ -59,6 +59,34 @@ Test(Circuit, and_gate_behavior) {
     cr_assert_eq(state, nts::FALSE, "Output should be FALSE when one input is FALSE");
 }
 
+Test(Circuit, and_gate_with_clock_behavior) {
+    nts::Circuit circuit;
+    circuit.addComponent("clock", "Clk1");
+    circuit.addComponent("input", "In1");
+    circuit.addComponent("and", "And1");
+    circuit.addComponent("output", "Out1");
+
+    circuit.linkComponents("Clk1", "And1", 1, 1);
+    circuit.linkComponents("In1", "And1", 1, 2);
+    circuit.linkComponents("And1", "Out1", 3, 1);
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
+
+    circuit.simulate(1);
+    nts::Tristate state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::UNDEFINED, "Output should be UNDEFINED when clock is UNDEFINED but is %d", state);
+
+    circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::TRUE);
+    circuit.simulate(2);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::TRUE, "Output should be TRUE when clock is TRUE and input is TRUE");
+
+    circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::FALSE);
+    circuit.simulate(3);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::FALSE, "Output should be FALSE when clock is FALSE");
+}
+
 Test(Circuit, or_gate_behavior) {
     nts::Circuit circuit;
     circuit.addComponent("input", "In1");
@@ -80,6 +108,45 @@ Test(Circuit, or_gate_behavior) {
     circuit.simulate(2);
     state = circuit.compute("Out1");
     cr_assert_eq(state, nts::FALSE, "Output should be FALSE when both inputs are FALSE");
+}
+
+Test(Circuit, or_gate_with_clock_behavior) {
+    nts::Circuit circuit;
+    circuit.addComponent("clock", "Clk1");
+    circuit.addComponent("input", "In1");
+    circuit.addComponent("or", "Or1");
+    circuit.addComponent("output", "Out1");
+
+    circuit.linkComponents("Clk1", "Or1", 1, 1);
+    circuit.linkComponents("In1", "Or1", 1, 2);
+    circuit.linkComponents("Or1", "Out1", 3, 1);
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::FALSE);
+
+    circuit.simulate(1);
+    nts::Tristate state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::UNDEFINED, "Output should be UNDEFINED when clock is UNDEFINED and input is FALSE");
+
+    circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::TRUE);
+    circuit.simulate(2);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::TRUE, "Output should be TRUE when clock is TRUE and input is FALSE");
+
+    circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::FALSE);
+    circuit.simulate(3);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::FALSE, "Output should be FALSE when clock is FALSE and input is FALSE");
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::UNDEFINED);
+    circuit.simulate(4);
+    state = circuit.compute("Out1");
+    nts::Tristate clock_state = circuit.compute("Clk1");
+    cr_assert_eq(state, nts::TRUE, "Output should be UNDEFINED when clock is %d and input is UNDEFINED but is %d", clock_state, state);
+
+    circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::TRUE);
+    circuit.simulate(5);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::UNDEFINED, "Output should be TRUE when clock is FALSE and input is UNDEFINED but is %d", state);
 }
 
 Test(Circuit, not_gate_behavior) {
