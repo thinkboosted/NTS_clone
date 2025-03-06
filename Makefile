@@ -23,16 +23,20 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 				$(SRC_DIR)/specialComponents/True.cpp	\
 				$(SRC_DIR)/specialComponents/False.cpp	\
 				$(SRC_DIR)/specialComponents/Undefined.cpp	\
+				$(SRC_DIR)/elementaryComponents/ANDComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/NOTComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/ORComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/XORComponent.cpp	\
 				$(SRC_DIR)/ShellLoop.cpp				\
 				$(SRC_DIR)/AComponent.cpp		\
-				$(SRC_DIR)/specialComponents/ANDComponent.cpp \
 				$(SRC_DIR)/Circuit.cpp
 
 MAIN 	= 		$(SRC_DIR)/main.cpp
 
 TEST_SRC = 		tests/test.cpp \
 				tests/test_special_components.cpp \
-				tests/test_circuit.cpp
+				tests/test_circuit.cpp			\
+				tests/test_elementaryComponents.cpp
 
 
 OBJ = $(SRC:.cpp=.o)

@@ -1,5 +1,5 @@
-#ifndef AND_HPP
-#define AND_HPP
+#ifndef ORCOMPONENT_HPP
+#define ORCOMPONENT_HPP
 
 #include <string>
 #include <memory>
@@ -7,15 +7,15 @@
 
 namespace nts
 {
-    class ANDComponent : public AComponent
+    class ORComponent : public AComponent
     {
         public:
-            ANDComponent(const std::string &name = "and");
-            ~ANDComponent();
+            ORComponent(const std::string &name = "or");
+            ~ORComponent();
             void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin);
             void simulate(std::size_t tick) override;
             nts::Tristate compute(std::size_t tick) override;
     };
 }
 
-#endif // AND_HPP
+#endif // ORCOMPONENT_HPP

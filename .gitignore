@@ -36,3 +36,5 @@ B-OOP*
 nanotekspice
 *.json
 *.log
+
+build/

@@ -24,18 +24,12 @@ void nts::ClockComponent::setLink(std::size_t pin, std::shared_ptr<nts::ICompone
 
 void nts::ClockComponent::simulate(std::size_t tick)
 {
-    auto pin = this->_pins[0].lock();
-    if (!pin)
-        throw std::invalid_argument("Pin not linked or component destroyed");
-    if (tick == this->_lastTick) {
-        std::cerr << "ClockComponent::simulate called twice with the same tick" << std::endl;
+    if (tick == this->_lastTick)
         return;
-    }
     this->_lastTick = tick;
-    if (this->getState() == nts::TRUE)
-        this->setState(nts::FALSE);
-    else
-        this->setState(nts::TRUE);
+    if (_pins[0].lock() == nullptr)
+        return;
+    this->setState(this->_pins[0].lock()->compute(tick));
 }
 
 nts::Tristate nts::ClockComponent::compute(std::size_t tick)
