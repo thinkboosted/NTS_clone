@@ -81,7 +81,6 @@ Test(ShellLoop, display_command_calls_circuit_display)
     TestableShellLoop shell(circuit);
 
     shell.display(circuit);
-    std::cout << "displayCalls: " << circuit.displayCalls << std::endl;
     cr_assert_eq(circuit.displayCalls, 1);
 }
 
@@ -91,7 +90,6 @@ Test(ShellLoop, simulate_command_increases_tick)
     TestableShellLoop shell(circuit);
 
     shell.simulate(circuit);
-    std::cout << "simulateCalls: " << circuit.simulateCalls << std::endl;
     //cr_assert_eq(circuit.simulateCalls, 1);
     cr_assert_eq(circuit.getTick(), 1);
 }

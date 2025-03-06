@@ -12,6 +12,9 @@
 nts::Circuit::Circuit()
     : _factory(nts::Factory()), _tick(0)
 {
+    _components["false"] = _factory.createComponent("false", "false");
+    _components["true"] = _factory.createComponent("true", "true");
+    _components["undefined"] = _factory.createComponent("undefined", "undefined");
 }
 
 nts::Circuit::~Circuit()
@@ -111,13 +114,11 @@ void nts::Circuit::setInputState(nts::InputComponent &input, nts::Tristate state
 
     std::shared_ptr<nts::IComponent> tempComponent;
     if (state == nts::UNDEFINED)
-        tempComponent = _factory.createComponent("undefined", "undefined");
+        input.setLink(1, _components.at("undefined"), 1);
     else if (state == nts::TRUE)
-        tempComponent = _factory.createComponent("true", "true");
+        input.setLink(1, _components.at("true"), 1);
     else
-        tempComponent = _factory.createComponent("false", "false");
-    _tempComponents.push_back(tempComponent);
-    input.setLink(1, tempComponent, 1);
+        input.setLink(1, _components.at("false"), 1);
 }
 
 std::shared_ptr<nts::IComponent> &nts::Circuit::getComponent(const std::string &name)

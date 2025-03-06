@@ -15,13 +15,19 @@ nts::InputComponent::InputComponent(const std::string &name) : AComponent(name, 
     this->setState(nts::UNDEFINED);
 }
 
+nts::InputComponent::~InputComponent()
+{
+}
+
 void nts::InputComponent::simulate(std::size_t tick)
 {
     (void)tick;
-    auto pin = this->_pins[0].lock();
-    if (!pin)
-        throw std::invalid_argument("Pin not linked or component has been destroyed");
-    this->setState(pin->compute(tick));
+    if (_pins[0].lock() == nullptr) {
+        this->setState(nts::UNDEFINED);
+    }
+    else {
+        this->setState(_pins[0].lock()->compute(tick));
+    }
 }
 
 nts::Tristate nts::InputComponent::compute(std::size_t tick)
@@ -33,8 +39,9 @@ nts::Tristate nts::InputComponent::compute(std::size_t tick)
 void nts::InputComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
 {
     (void)otherPin;
-    if (pin == 1)
+    if (pin == 1) {
         this->_pins[pin - 1] = other;
+    }
     else
         throw std::invalid_argument("Pin does not exist");
 }

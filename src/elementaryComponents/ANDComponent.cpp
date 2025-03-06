@@ -1,11 +1,4 @@
-/*
-** EPITECH PROJECT, 2025
-** NTS_clone
-** File description:
-** ANDComponent
-*/
-
-#include "AND.hpp"
+#include "ANDComponent.hpp"
 #include <iostream>
 
 namespace nts
@@ -23,26 +16,33 @@ namespace nts
     {
         (void)otherPin;
         if (pin >= 1 && pin <= 3)
-            this->_pins[pin - 1] = other; // This stores a weak_ptr now
+            this->_pins[pin - 1] = other;
         else
             throw std::invalid_argument("Pin does not exist");
     }
 
     void ANDComponent::simulate(std::size_t tick)
     {
+        nts::Tristate first;
+        nts::Tristate second;
+
         if (tick == this->_lastTick)
             return;
         this->_lastTick = tick;
-
-        auto pin0 = this->_pins[0].lock();
-        auto pin1 = this->_pins[1].lock();
-
-        if (!pin0 || !pin1)
-            throw std::invalid_argument("Pin not linked or component destroyed");
-        if (pin0->compute(tick) == nts::TRUE && pin1->compute(tick) == nts::TRUE)
-            this->setState(nts::TRUE);
+        if (this->_pins[0].lock() == nullptr)
+            first = nts::UNDEFINED;
         else
+            first = this->_pins[0].lock()->compute(tick);
+        if (this->_pins[1].lock() == nullptr)
+            second = nts::UNDEFINED;
+        else
+            second = this->_pins[1].lock()->compute(tick);
+        if (first == nts::FALSE || second == nts::FALSE)
             this->setState(nts::FALSE);
+        else if (first == nts::UNDEFINED || second == nts::UNDEFINED)
+            this->setState(nts::UNDEFINED);
+        else
+            this->setState(nts::TRUE);
     }
 
     nts::Tristate ANDComponent::compute(std::size_t tick)

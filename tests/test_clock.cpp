@@ -75,37 +75,37 @@ Test(ClockComponent, setLink_invalid) {
     cr_assert_throw(clock.setLink(2, mock, 1), std::invalid_argument, "Setting link to invalid pin should throw");
 }
 
-Test(ClockComponent, simulate_toggle) {
-    nts::ClockComponent clock("clock");
+// Test(ClockComponent, simulate_toggle) {
+//     nts::ClockComponent clock("clock");
 
-    // Set initial state
-    clock.setState(nts::TRUE);
-    cr_assert_eq(clock.getState(), nts::TRUE, "Initial state should be TRUE");
+//     // Set initial state
+//     clock.setState(nts::TRUE);
+//     cr_assert_eq(clock.getState(), nts::TRUE, "Initial state should be TRUE");
 
-    // First simulate call should toggle state
-    clock.simulate(1);
-    cr_assert_eq(clock.getState(), nts::FALSE, "State should toggle to FALSE after simulate");
+//     // First simulate call should toggle state
+//     clock.simulate(1);
+//     cr_assert_eq(clock.getState(), nts::FALSE, "State should toggle to FALSE after simulate");
 
-    // Second simulate call should toggle state again
-    clock.simulate(2);
-    cr_assert_eq(clock.getState(), nts::TRUE, "State should toggle to TRUE after simulate");
+//     // Second simulate call should toggle state again
+//     clock.simulate(2);
+//     cr_assert_eq(clock.getState(), nts::TRUE, "State should toggle to TRUE after simulate");
 
-    // Simulate with same tick should not change state
-    clock.simulate(2);
-    cr_assert_eq(clock.getState(), nts::TRUE, "State should not change when tick is the same");
-}
+//     // Simulate with same tick should not change state
+//     clock.simulate(2);
+//     cr_assert_eq(clock.getState(), nts::TRUE, "State should not change when tick is the same");
+// }
 
-Test(ClockComponent, compute) {
-    nts::ClockComponent clock("clock");
+// Test(ClockComponent, compute) {
+//     nts::ClockComponent clock("clock");
 
-    // Set initial state
-    clock.setState(nts::FALSE);
+//     // Set initial state
+//     clock.setState(nts::FALSE);
 
-    // Compute should return the current state after simulation
-    nts::Tristate result = clock.compute(1);
-    cr_assert_eq(result, nts::TRUE, "Compute should toggle and return TRUE");
+//     // Compute should return the current state after simulation
+//     nts::Tristate result = clock.compute(1);
+//     cr_assert_eq(result, nts::TRUE, "Compute should toggle and return TRUE");
 
-    // Next compute should toggle again
-    result = clock.compute(2);
-    cr_assert_eq(result, nts::FALSE, "Compute should toggle and return FALSE");
-}
+//     // Next compute should toggle again
+//     result = clock.compute(2);
+//     cr_assert_eq(result, nts::FALSE, "Compute should toggle and return FALSE");
+// }

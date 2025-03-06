@@ -6,7 +6,10 @@
 */
 
 #include "../include/Factory.hpp"
-#include "./specialComponents/AND.hpp"
+#include "./elementaryComponents/ANDComponent.hpp"
+#include "./elementaryComponents/NOTComponent.hpp"
+#include "./elementaryComponents/ORComponent.hpp"
+#include "./elementaryComponents/XORComponent.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
@@ -20,6 +23,8 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return createFalse(name);
     else if (type == "true")
         return createTrue(name);
+    else if (type == "undefined")
+        return createUndefined(name);
     else if (type == "input")
         return createInput(name);
     else if (type == "output")
@@ -28,8 +33,12 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return createClock(name);
     else if (type == "and")
         return createAND(name);
-    else if (type == "undefined")
-        return createUndefined(name);
+    else if (type == "or")
+        return createOR(name);
+    else if (type == "xor")
+        return createXOR(name);
+    else if (type == "not")
+        return createNOT(name);
     else
         return nullptr;
 }
@@ -67,4 +76,19 @@ std::shared_ptr<nts::IComponent> nts::Factory::createClock(const std::string &na
 std::shared_ptr<nts::IComponent> nts::Factory::createAND(const std::string &name) const
 {
     return std::make_shared<nts::ANDComponent>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::createOR(const std::string &name) const
+{
+    return std::make_shared<nts::ORComponent>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::createXOR(const std::string &name) const
+{
+    return std::make_shared<nts::XORComponent>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::createNOT(const std::string &name) const
+{
+    return std::make_shared<nts::NOTComponent>(name);
 }

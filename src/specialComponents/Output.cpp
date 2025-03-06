@@ -17,8 +17,9 @@ void nts::OutputComponent::simulate(std::size_t tick)
     (void)tick;
     auto pin = this->_pins[0].lock();
     if (!pin)
-        throw std::invalid_argument("Pin not linked or component has been destroyed");
-    this->setState(pin->compute(tick));
+        this->setState(nts::UNDEFINED);
+    else
+        this->setState(pin->compute(tick));
 }
 
 nts::Tristate nts::OutputComponent::compute(std::size_t tick)
