@@ -32,7 +32,8 @@ MAIN 	= 		$(SRC_DIR)/main.cpp
 
 TEST_SRC = 		tests/test.cpp \
 				tests/test_special_components.cpp \
-				tests/test_circuit.cpp
+				tests/test_circuit.cpp	\
+				tests/test_clock.cpp
 
 
 OBJ = $(SRC:.cpp=.o)

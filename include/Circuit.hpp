@@ -36,6 +36,7 @@ namespace nts
         private:
             mutable size_t _tick;
 		    std::vector<nts::OutputComponent*> _outputs;
+            mutable std::vector<std::shared_ptr<nts::IComponent>> _tempComponents;
             std::unordered_map<std::string, std::shared_ptr<nts::IComponent>> _components;
             Factory _factory;
             void displayComponentState(const std::string& name, nts::Tristate state) const;
