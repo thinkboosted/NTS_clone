@@ -47,7 +47,7 @@ OBJ_MAIN = $(MAIN:.cpp=.o)
 CXX = g++
 CXXFLAGS = -Wall -Wextra -Werror -Iinclude -Itests
 TEST_FLAGS = $(CXXFLAGS) -std=c++17 --coverage -lcriterion
-
+VALGRIND_FLAGS = --leak-check=full --show-leak-kinds=all --track-origins=yes
 
 all: $(NAME)
 
@@ -87,6 +87,6 @@ coverage: clean build_test
 	@gcovr -r . --exclude='tests/.*' --exclude='.*\.hpp' --txt-metric branch
 
 valgrind:
-	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+	valgrind $(VALGRIND_FLAGS) ./$(NAME)
 
 .PHONY: all clean fclean re tests_run coverage valgrind
