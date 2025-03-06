@@ -139,7 +139,27 @@ static int start(char *path)
     return 0;
 }
 
+static int test()
+{
+    nts::Circuit circuit;
+    circuit.addComponent("clock", "clock");
+    circuit.addComponent("output", "output");
+    circuit.linkComponents("clock", "output", 1, 1);
+
+    printf("Output should be UNDEFINED (%d)\n", circuit.compute("output"));
+    circuit.simulate(circuit.getTick() + 1);
+    printf("Output should be UNDEFINED (%d)\n", circuit.compute("output"));
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
+    printf("Output should be UNDEFINED (%d)\n", circuit.compute("output"));
+    circuit.simulate(circuit.getTick() + 1);
+    printf("Output should be TRUE (%d)\n", circuit.compute("output"));
+    circuit.simulate(circuit.getTick() + 1);
+    printf("Output should be FALSE (%d)\n", circuit.compute("output"));
+    return 0;
+}
+
 int main(int argc, char **argv) {
+    return test();
     if (argc != 2) {
         std::cerr << "Usage: " << argv[0] << " <circuit_file>" << std::endl;
         return 84;

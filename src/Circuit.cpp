@@ -10,7 +10,7 @@
 #include "../include/IComponent.hpp"
 
 nts::Circuit::Circuit()
-    : _tick(0), _factory(nts::Factory())
+    : _factory(nts::Factory()), _tick(0)
 {
     _components["false"] = _factory.createComponent("false", "false");
     _components["true"] = _factory.createComponent("true", "true");
@@ -55,15 +55,16 @@ void nts::Circuit::displayInputs() const
 {
     for (const auto &component : _components)
     {
-        auto input = dynamic_cast<nts::InputComponent *>(component.second.get());
-        if (input != nullptr)
-        {
-            displayComponentState(input->getName(), input->getState());
-        }
         auto clock = dynamic_cast<nts::ClockComponent *>(component.second.get());
         if (clock != nullptr)
         {
             displayComponentState(clock->getName(), clock->getState());
+            continue;
+        }
+        auto input = dynamic_cast<nts::InputComponent *>(component.second.get());
+        if (input != nullptr)
+        {
+            displayComponentState(input->getName(), input->getState());
         }
         auto trueComponent = dynamic_cast<nts::TrueComponent *>(component.second.get());
         if (trueComponent != nullptr)
@@ -110,6 +111,8 @@ void nts::Circuit::setInputState(nts::InputComponent &input, nts::Tristate state
 {
     if (state == input.getState())
         return;
+
+    std::shared_ptr<nts::IComponent> tempComponent;
     if (state == nts::UNDEFINED)
         input.setLink(1, _components.at("undefined"), 1);
     else if (state == nts::TRUE)
