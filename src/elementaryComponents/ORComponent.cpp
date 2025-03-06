@@ -21,28 +21,30 @@ namespace nts
             throw std::invalid_argument("Pin does not exist");
     }
 
+    nts::Tristate ORComponent::calculateState(nts::Tristate first, nts::Tristate second)
+    {
+        if (first == nts::TRUE || second == nts::TRUE)
+            return nts::TRUE;
+        else if (first == nts::UNDEFINED || second == nts::UNDEFINED)
+            return nts::UNDEFINED;
+        else
+            return nts::FALSE;
+    }
+
     void ORComponent::simulate(std::size_t tick)
     {
-        nts::Tristate first;
-        nts::Tristate second;
+        nts::Tristate first = UNDEFINED;
+        nts::Tristate second = UNDEFINED;
 
         if (tick == this->_lastTick)
             return;
         this->_lastTick = tick;
-        if (this->_pins[0].lock() == nullptr)
-            first = nts::UNDEFINED;
-        else
+
+        if (this->_pins[0].lock() != nullptr)
             first = this->_pins[0].lock()->compute(tick);
-        if (this->_pins[1].lock() == nullptr)
-            second = nts::UNDEFINED;
-        else
+        if (this->_pins[1].lock() != nullptr)
             second = this->_pins[1].lock()->compute(tick);
-        if (first == nts::TRUE || second == nts::TRUE)
-            this->setState(nts::TRUE);
-        else if (first == nts::UNDEFINED || second == nts::UNDEFINED)
-            this->setState(nts::UNDEFINED);
-        else
-            this->setState(nts::FALSE);
+        this->setState(calculateState(first, second));
     }
 
     nts::Tristate ORComponent::compute(std::size_t tick)

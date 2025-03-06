@@ -25,8 +25,10 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 				$(SRC_DIR)/specialComponents/Undefined.cpp	\
 				$(SRC_DIR)/elementaryComponents/ANDComponent.cpp	\
 				$(SRC_DIR)/elementaryComponents/NOTComponent.cpp	\
-				$(SRC_DIR)/elementaryComponents/ORComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/ORComponent.cpp		\
 				$(SRC_DIR)/elementaryComponents/XORComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/NANDComponent.cpp	\
+				$(SRC_DIR)/elementaryComponents/NORComponent.cpp	\
 				$(SRC_DIR)/ShellLoop.cpp				\
 				$(SRC_DIR)/AComponent.cpp		\
 				$(SRC_DIR)/Circuit.cpp

@@ -10,6 +10,8 @@
 #include "./elementaryComponents/NOTComponent.hpp"
 #include "./elementaryComponents/ORComponent.hpp"
 #include "./elementaryComponents/XORComponent.hpp"
+#include "./elementaryComponents/NANDComponent.hpp"
+#include "./elementaryComponents/NORComponent.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
@@ -39,8 +41,22 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return createXOR(name);
     else if (type == "not")
         return createNOT(name);
+    else if (type == "nand")
+        return createNAND(name);
+    else if (type == "nor")
+        return createNOR(name);
     else
         return nullptr;
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::createNAND(const std::string &name) const
+{
+    return std::make_shared<nts::NANDComponent>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::createNOR(const std::string &name) const
+{
+    return std::make_shared<nts::NORComponent>(name);
 }
 
 std::shared_ptr<nts::IComponent> nts::Factory::createUndefined(const std::string &name) const

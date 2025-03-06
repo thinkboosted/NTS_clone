@@ -1,18 +1,18 @@
-#include "ANDComponent.hpp"
+#include "NORComponent.hpp"
 #include <iostream>
 
 namespace nts
 {
-    ANDComponent::ANDComponent(const std::string &name) : AComponent(name, 3)
+    NORComponent::NORComponent(const std::string &name) : AComponent(name, 3)
     {
         this->setState(nts::UNDEFINED);
     }
 
-    ANDComponent::~ANDComponent()
+    NORComponent::~NORComponent()
     {
     }
 
-    void ANDComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
+    void NORComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
     {
         (void)otherPin;
         if (pin >= 1 && pin <= 3)
@@ -21,9 +21,9 @@ namespace nts
             throw std::invalid_argument("Pin does not exist");
     }
 
-    Tristate ANDComponent::calculateState(nts::Tristate first, nts::Tristate second)
+    Tristate NORComponent::calculateState(nts::Tristate first, nts::Tristate second)
     {
-        if (first == nts::FALSE || second == nts::FALSE)
+        if (first == nts::TRUE || second == nts::TRUE)
             return nts::FALSE;
         else if (first == nts::UNDEFINED || second == nts::UNDEFINED)
             return nts::UNDEFINED;
@@ -31,7 +31,7 @@ namespace nts
             return nts::TRUE;
     }
 
-    void ANDComponent::simulate(std::size_t tick)
+    void NORComponent::simulate(std::size_t tick)
     {
         nts::Tristate first = UNDEFINED;
         nts::Tristate second = UNDEFINED;
@@ -46,7 +46,7 @@ namespace nts
         this->setState(calculateState(first, second));
     }
 
-    nts::Tristate ANDComponent::compute(std::size_t tick)
+    nts::Tristate NORComponent::compute(std::size_t tick)
     {
         this->simulate(tick);
         return this->getState();

@@ -191,3 +191,49 @@ Test(Circuit, xor_gate_behavior) {
     state = circuit.compute("Out1");
     cr_assert_eq(state, nts::FALSE, "Output should be FALSE when inputs are the same");
 }
+
+Test(Circuit, nand_gate_behavior) {
+    nts::Circuit circuit;
+    circuit.addComponent("input", "In1");
+    circuit.addComponent("input", "In2");
+    circuit.addComponent("nand", "Nand1");
+    circuit.addComponent("output", "Out1");
+
+    circuit.linkComponents("In1", "Nand1", 1, 1);
+    circuit.linkComponents("In2", "Nand1", 1, 2);
+    circuit.linkComponents("Nand1", "Out1", 3, 1);
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::TRUE);
+    circuit.simulate(1);
+    nts::Tristate state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::FALSE, "Output should be FALSE when both inputs are TRUE but was %d", state);
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::FALSE);
+    circuit.simulate(2);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::TRUE, "Output should be TRUE when one input is FALSE");
+}
+
+Test(Circuit, nor_gate_behavior) {
+    nts::Circuit circuit;
+    circuit.addComponent("input", "In1");
+    circuit.addComponent("input", "In2");
+    circuit.addComponent("nor", "Nor1");
+    circuit.addComponent("output", "Out1");
+
+    circuit.linkComponents("In1", "Nor1", 1, 1);
+    circuit.linkComponents("In2", "Nor1", 1, 2);
+    circuit.linkComponents("Nor1", "Out1", 3, 1);
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::FALSE);
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::FALSE);
+    circuit.simulate(1);
+    nts::Tristate state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::TRUE, "Output should be TRUE when both inputs are FALSE");
+
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
+    circuit.simulate(2);
+    state = circuit.compute("Out1");
+    cr_assert_eq(state, nts::FALSE, "Output should be FALSE when one input is TRUE");
+}
