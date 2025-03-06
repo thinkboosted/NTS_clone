@@ -84,4 +84,7 @@ coverage: clean build_test
 	@gcovr -r . --exclude='tests/.*' --exclude='.*\.hpp'
 	@gcovr -r . --exclude='tests/.*' --exclude='.*\.hpp' --txt-metric branch
 
-.PHONY: all clean fclean re tests_run coverage
+valgrind:
+	valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes ./$(NAME)
+
+.PHONY: all clean fclean re tests_run coverage valgrind

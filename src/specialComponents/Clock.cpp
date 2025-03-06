@@ -17,7 +17,7 @@ void nts::ClockComponent::setLink(std::size_t pin, std::shared_ptr<nts::ICompone
 {
     (void)otherPin;
     if (pin == 1)
-        this->_pins[pin - 1] = other; // This stores a weak_ptr now
+        this->_pins[pin - 1] = other;
     else
         throw std::invalid_argument("Pin does not exist");
 }

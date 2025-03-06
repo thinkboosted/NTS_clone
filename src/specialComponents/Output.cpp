@@ -20,7 +20,6 @@ void nts::OutputComponent::simulate(std::size_t tick)
         this->setState(nts::UNDEFINED);
     else
         this->setState(pin->compute(tick));
-    this->setState(pin->compute(tick));
 }
 
 nts::Tristate nts::OutputComponent::compute(std::size_t tick)
