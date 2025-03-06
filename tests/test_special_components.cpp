@@ -68,11 +68,25 @@ Test(Circuit, clock_behavior)
     circuit.addComponent("output", "output");
     circuit.linkComponents("clock", "output", 1, 1);
 
+    circuit.simulate(circuit.getTick() + 1);
+    cr_assert_eq(circuit.compute("output"), nts::UNDEFINED, "Output should be UNDEFINED");
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
     cr_assert_eq(circuit.compute("output"), nts::UNDEFINED, "Output should be UNDEFINED");
     circuit.simulate(circuit.getTick() + 1);
     cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE but is %d while clock is %d", circuit.compute("output"), circuit.compute("clock"));
     circuit.simulate(circuit.getTick() + 1);
     cr_assert_eq(circuit.compute("output"), nts::FALSE, "Output should be FALSE");
+}
+
+// clock with 2 pins
+Test(Circuit, clock_with_2_pins_behavior)
+{
+    nts::Circuit circuit;
+    circuit.addComponent("clock", "clock");
+    circuit.addComponent("output", "output");
+    circuit.linkComponents("clock", "output", 1, 1);
+
+    cr_assert_throw(circuit.linkComponents("clock", "output", 2, 1), std::invalid_argument, "Should throw for invalid pin");
 }
 
 // Test(Circuit, and_behavior)

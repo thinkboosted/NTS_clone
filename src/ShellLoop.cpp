@@ -44,6 +44,40 @@ void nts::ShellLoop::loop(Circuit &circuit)
     }
 }
 
+bool nts::ShellLoop::setComponentValue(const std::string &input, Circuit &circuit)
+{
+    std::regex valuePattern("([a-zA-Z0-9_]+)=([01U])");
+    std::smatch matches;
+
+    if (std::regex_match(input, matches, valuePattern)) {
+        std::string componentName = matches[1];
+        std::string valueStr = matches[2];
+
+        try {
+            auto &component = circuit.getComponent(componentName);
+            auto inputComp = dynamic_cast<nts::InputComponent*>(component.get());
+            if (!inputComp) {
+                std::cerr << "Error: " << componentName << " is not an input component" << std::endl;
+                return false;
+            }
+            nts::Tristate state;
+            if (valueStr == "1")
+                state = nts::TRUE;
+            else if (valueStr == "0")
+                state = nts::FALSE;
+            else
+                state = nts::UNDEFINED;
+            circuit.setInputState(*inputComp, state);
+            return true;
+        } catch (const std::out_of_range &e) {
+            std::cerr << "Error: component " << componentName << " not found" << std::endl;
+        } catch (const std::exception &e) {
+            std::cerr << "Error: " << e.what() << std::endl;
+        }
+    }
+    return false;
+}
+
 void nts::ShellLoop::run()
 {
     std::string input;
@@ -60,5 +94,8 @@ void nts::ShellLoop::run()
             (this->*_commands[input])(_circuit);
         else if (input == "exit")
             exit(_circuit);
+        else if (!setComponentValue(input, _circuit)) {
+            std::cerr << "Invalid command: " << input << std::endl;
+        }
     }
 }

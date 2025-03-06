@@ -21,6 +21,7 @@ namespace nts
 
         private:
             size_t _lastTick;
+            bool _manuallySet = true;
     };
 }
 
