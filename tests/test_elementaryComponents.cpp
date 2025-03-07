@@ -146,7 +146,7 @@ Test(Circuit, or_gate_with_clock_behavior) {
     circuit.setInputState(*dynamic_cast<nts::ClockComponent*>(circuit.getComponent("Clk1").get()), nts::TRUE);
     circuit.simulate(5);
     state = circuit.compute("Out1");
-    cr_assert_eq(state, nts::UNDEFINED, "Output should be TRUE when clock is FALSE and input is UNDEFINED but is %d", state);
+    cr_assert_eq(state, nts::TRUE, "Output should be TRUE when clock is FALSE and input is UNDEFINED but is %d and clock is: %d and input is: %d", state, circuit.compute("Clk1"), circuit.compute("In1"));
 }
 
 Test(Circuit, not_gate_behavior) {
