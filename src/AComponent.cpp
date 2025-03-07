@@ -6,6 +6,8 @@
 */
 
 #include "../include/AComponent.hpp"
+#include "../include/specialComponents/True.hpp"
+#include "../include/specialComponents/False.hpp"
 
 namespace nts
 {
@@ -33,4 +35,10 @@ namespace nts
     {
         _state = state;
     }
+}
+
+bool isTrueFalseComponent(const nts::IComponent& component)
+{
+    return dynamic_cast<const nts::TrueComponent*>(&component) != nullptr
+        || dynamic_cast<const nts::FalseComponent*>(&component) != nullptr;
 }

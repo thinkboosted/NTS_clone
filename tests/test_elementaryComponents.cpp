@@ -46,6 +46,8 @@ Test(Circuit, and_gate_behavior) {
     circuit.linkComponents("In2", "And1", 1, 2);
     circuit.linkComponents("And1", "Out1", 3, 1);
 
+    circuit.simulate(0); // init components' values
+
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
 
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::TRUE);
@@ -97,6 +99,8 @@ Test(Circuit, or_gate_behavior) {
     circuit.linkComponents("In1", "Or1", 1, 1);
     circuit.linkComponents("In2", "Or1", 1, 2);
     circuit.linkComponents("Or1", "Out1", 3, 1);
+
+    circuit.simulate(0); // init components' values
 
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::FALSE);
@@ -158,6 +162,8 @@ Test(Circuit, not_gate_behavior) {
     circuit.linkComponents("In1", "Not1", 1, 1);
     circuit.linkComponents("Not1", "Out1", 2, 1);
 
+    circuit.simulate(0); // init components' values
+
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
     circuit.simulate(1);
     nts::Tristate state = circuit.compute("Out1");
@@ -179,6 +185,8 @@ Test(Circuit, xor_gate_behavior) {
     circuit.linkComponents("In1", "Xor1", 1, 1);
     circuit.linkComponents("In2", "Xor1", 1, 2);
     circuit.linkComponents("Xor1", "Out1", 3, 1);
+
+    circuit.simulate(0); // init components' values
 
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In2").get()), nts::FALSE);

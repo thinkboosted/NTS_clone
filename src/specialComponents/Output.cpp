@@ -34,5 +34,4 @@ void nts::OutputComponent::setLink(std::size_t pin, std::shared_ptr<nts::ICompon
     if (pin != 1)
         throw std::out_of_range("Error: Pin index out of range");
     this->_pins[pin - 1] = other;
-    this->setState(other->compute(0));
 }
