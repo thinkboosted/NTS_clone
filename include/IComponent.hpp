@@ -31,4 +31,6 @@ namespace nts
     };
 }
 
+bool isTrueFalseComponent(const nts::IComponent& component);
+
 #endif // ICOMPONENT_HPP

@@ -82,6 +82,7 @@ void nts::ShellLoop::run()
 {
     std::string input;
 
+    _circuit.simulate(0);
     while (_running) {
         std::cout << "> ";
         if (!std::getline(std::cin, input)) {
