@@ -9,7 +9,7 @@
 
 namespace nts
 {
-    AComponent::AComponent(const std::string &name, std::size_t nbPins) : _name(name), _lastTick(0), _nbPins(nbPins), _state(nts::UNDEFINED)
+    AComponent::AComponent(const std::string &name, std::size_t nbPins) : _name(name), _lastTick(1), _nbPins(nbPins), _state(nts::UNDEFINED)
     {
         _pins = std::vector<std::weak_ptr<nts::IComponent>>(nbPins);
     }
