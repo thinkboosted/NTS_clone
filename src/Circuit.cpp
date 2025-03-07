@@ -55,6 +55,10 @@ void nts::Circuit::displayInputs() const
 {
     for (const auto &component : _components)
     {
+        //check if it is true/false or if it is an actual input/clock
+        if (isTrueFalseComponent(*component.second))
+            continue;
+
         if (component.first == "true" || component.first == "false" || component.first == "undefined")
             continue;
         auto clock = dynamic_cast<nts::ClockComponent *>(component.second.get());

@@ -15,6 +15,12 @@
 #include "../include/Circuit.hpp"
 #include "../include/ShellLoop.hpp"
 
+bool isTrueFalseComponent(const nts::IComponent& component)
+{
+    return dynamic_cast<const nts::TrueComponent*>(&component) != nullptr
+        || dynamic_cast<const nts::FalseComponent*>(&component) != nullptr;
+}
+
 void displayComponents(const std::vector<std::string>& lines) {
     std::cout << "\n=== COMPONENTS ===\n";
     bool inChipsetSection = false;
