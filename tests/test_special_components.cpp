@@ -76,9 +76,11 @@ Test(Circuit, clock_behavior)
     circuit.simulate(circuit.getTick() + 1);
     cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE but is %d", circuit.compute("output"));
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
-    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
     circuit.simulate(circuit.getTick() + 1);
-    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE");
+    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
+    circuit.simulate(circuit.getTick() + 1);
+    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
 }
 
 // clock with 2 pins
