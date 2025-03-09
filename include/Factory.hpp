@@ -29,7 +29,7 @@ namespace nts
             std::shared_ptr<nts::IComponent> createNOR(const std::string &name) const;
             std::shared_ptr<nts::IComponent> createNAND(const std::string &name) const;
 
-            std::shared_ptr<nts::IComponent> create4001() const;
+            std::shared_ptr<nts::IComponent> create4001(const std::string &name) const;
             std::shared_ptr<nts::IComponent> create4011() const;
             std::shared_ptr<nts::IComponent> create4030() const;
             std::shared_ptr<nts::IComponent> create4069() const;

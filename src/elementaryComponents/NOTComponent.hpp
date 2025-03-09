@@ -15,9 +15,7 @@ namespace nts
             void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin);
             void simulate(std::size_t tick) override;
             nts::Tristate compute(std::size_t tick) override;
-
-        private:
-            nts::Tristate calculateState(nts::Tristate state);
+            static nts::Tristate calculateState(nts::Tristate state);
     };
 }
 

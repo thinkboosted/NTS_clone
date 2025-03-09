@@ -29,6 +29,7 @@ SRC 	= 		$(SRC_DIR)/Parser.cpp					\
 				$(SRC_DIR)/elementaryComponents/XORComponent.cpp	\
 				$(SRC_DIR)/elementaryComponents/NANDComponent.cpp	\
 				$(SRC_DIR)/elementaryComponents/NORComponent.cpp	\
+				$(SRC_DIR)/gateComponents/4001Component.cpp		\
 				$(SRC_DIR)/ShellLoop.cpp				\
 				$(SRC_DIR)/AComponent.cpp		\
 				$(SRC_DIR)/Circuit.cpp
