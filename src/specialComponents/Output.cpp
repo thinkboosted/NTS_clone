@@ -19,7 +19,7 @@ void nts::OutputComponent::simulate(std::size_t tick)
     auto pin = this->_pins[0].lock();
     if (!pin)
         this->setState(nts::UNDEFINED);
-    else if (auto component4001 = std::dynamic_pointer_cast<nts::Component4001>(pin))
+    else if (auto component4001 = std::dynamic_pointer_cast<nts::AGate>(pin))
         pin->compute(tick);
     else
         this->setState(pin->compute(tick));

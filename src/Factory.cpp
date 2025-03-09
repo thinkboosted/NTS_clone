@@ -13,6 +13,7 @@
 #include "./elementaryComponents/NANDComponent.hpp"
 #include "./elementaryComponents/NORComponent.hpp"
 #include "./gateComponents/4001Component.hpp"
+#include "./gateComponents/4011Component.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
@@ -48,8 +49,15 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return createNOR(name);
     else if (type == "4001")
         return create4001(name);
+    else if (type == "4011")
+        return create4011(name);
     else
         return nullptr;
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::create4011(const std::string &name) const
+{
+    return std::make_shared<nts::Component4011>(name);
 }
 
 std::shared_ptr<nts::IComponent> nts::Factory::create4001(const std::string &name) const

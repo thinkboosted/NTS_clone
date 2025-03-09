@@ -1,5 +1,5 @@
-#ifndef COMPONENT4001_HPP
-#define COMPONENT4001_HPP
+#ifndef COMPONENT4011_HPP
+#define COMPONENT4011_HPP
 
 #include <string>
 #include <memory>
@@ -7,11 +7,11 @@
 
 namespace nts
 {
-    class Component4001 : public AGate
+    class Component4011 : public AGate
     {
         public:
-            Component4001(const std::string &name = "4001");
-            ~Component4001();
+            Component4011(const std::string &name = "4011");
+            ~Component4011();
 
             void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin) override;
             void simulate(std::size_t tick) override;
@@ -19,4 +19,4 @@ namespace nts
     };
 }
 
-#endif // COMPONENT4001_HPP
+#endif // COMPONENT4011_HPP
