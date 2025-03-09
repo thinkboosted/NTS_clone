@@ -8,6 +8,7 @@
 #include <map>
 #include <regex>
 #include "Circuit.hpp"
+#include <csignal>
 
 namespace nts {
 
@@ -17,6 +18,8 @@ class ShellLoop {
         ~ShellLoop();
         void run();
 
+        static bool signalReceived;
+        static void signalHandler(int signal);
     private:
     protected:
         Circuit &_circuit;
@@ -26,6 +29,9 @@ class ShellLoop {
         void display(Circuit &circuit);
         void simulate(Circuit &circuit);
         void loop(Circuit &circuit);
+        bool getUserInput(std::string &input);
+        bool executeCommand(const std::string &input);
+        void handleException(const std::exception &e);
         bool _running;
 
 };
