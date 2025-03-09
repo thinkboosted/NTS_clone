@@ -21,14 +21,26 @@ namespace nts
             throw std::invalid_argument("Pin does not exist");
     }
 
+    nts::Tristate NOTComponent::calculateState(nts::Tristate state)
+    {
+        if (state == nts::TRUE)
+            return nts::FALSE;
+        else if (state == nts::FALSE)
+            return nts::TRUE;
+        else
+            return nts::UNDEFINED;
+    }
+
     void NOTComponent::simulate(std::size_t tick)
     {
+        Tristate state = UNDEFINED;
+
         if (tick == this->_lastTick)
             return;
         this->_lastTick = tick;
-        if (this->_pins[0].lock() == nullptr || this->_pins[0].lock()->compute(tick) == nts::UNDEFINED)
-            return;
-        this->setState(this->_pins[0].lock()->compute(tick) == nts::TRUE ? nts::FALSE : nts::TRUE);
+        if (this->_pins[0].lock() != nullptr)
+            state = this->_pins[0].lock()->compute(tick);
+        this->setState(calculateState(state));
     }
 
     nts::Tristate NOTComponent::compute(std::size_t tick)

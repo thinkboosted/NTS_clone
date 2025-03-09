@@ -1,18 +1,18 @@
-#include "ANDComponent.hpp"
+#include "NANDComponent.hpp"
 #include <iostream>
 
 namespace nts
 {
-    ANDComponent::ANDComponent(const std::string &name) : AComponent(name, 3)
+    NANDComponent::NANDComponent(const std::string &name) : AComponent(name, 3)
     {
         this->setState(nts::UNDEFINED);
     }
 
-    ANDComponent::~ANDComponent()
+    NANDComponent::~NANDComponent()
     {
     }
 
-    void ANDComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
+    void NANDComponent::setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin)
     {
         (void)otherPin;
         if (pin >= 1 && pin <= 3)
@@ -21,17 +21,17 @@ namespace nts
             throw std::invalid_argument("Pin does not exist");
     }
 
-    Tristate ANDComponent::calculateState(nts::Tristate first, nts::Tristate second)
+    Tristate NANDComponent::calculateState(nts::Tristate first, nts::Tristate second)
     {
         if (first == nts::FALSE || second == nts::FALSE)
-            return nts::FALSE;
+            return nts::TRUE;
         else if (first == nts::UNDEFINED || second == nts::UNDEFINED)
             return nts::UNDEFINED;
         else
-            return nts::TRUE;
+            return nts::FALSE;
     }
 
-    void ANDComponent::simulate(std::size_t tick)
+    void NANDComponent::simulate(std::size_t tick)
     {
         nts::Tristate first = UNDEFINED;
         nts::Tristate second = UNDEFINED;
@@ -46,7 +46,7 @@ namespace nts
         this->setState(calculateState(first, second));
     }
 
-    nts::Tristate ANDComponent::compute(std::size_t tick)
+    nts::Tristate NANDComponent::compute(std::size_t tick)
     {
         this->simulate(tick);
         return this->getState();

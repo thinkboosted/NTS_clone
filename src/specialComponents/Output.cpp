@@ -6,6 +6,7 @@
 */
 
 #include "../../include/specialComponents/Output.hpp"
+#include "../gateComponents/4001Component.hpp"
 
 nts::OutputComponent::OutputComponent(const std::string &name) : AComponent(name, 1)
 {
@@ -18,6 +19,8 @@ void nts::OutputComponent::simulate(std::size_t tick)
     auto pin = this->_pins[0].lock();
     if (!pin)
         this->setState(nts::UNDEFINED);
+    else if (auto component4001 = std::dynamic_pointer_cast<nts::AGate>(pin))
+        pin->compute(tick);
     else
         this->setState(pin->compute(tick));
 }

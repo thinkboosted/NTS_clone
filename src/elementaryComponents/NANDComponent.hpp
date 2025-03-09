@@ -1,5 +1,5 @@
-#ifndef XXORCOMPONENT_HPP
-#define XXORCOMPONENT_HPP
+#ifndef NANDCOMPONENT_HPP
+#define NANDCOMPONENT_HPP
 
 #include <string>
 #include <memory>
@@ -7,11 +7,11 @@
 
 namespace nts
 {
-    class XORComponent : public AComponent
+    class NANDComponent : public AComponent
     {
         public:
-            XORComponent(const std::string &name = "xor");
-            ~XORComponent();
+            NANDComponent(const std::string &name = "nand");
+            ~NANDComponent();
             void setLink(std::size_t pin, std::shared_ptr<nts::IComponent> other, std::size_t otherPin);
             void simulate(std::size_t tick) override;
             nts::Tristate compute(std::size_t tick) override;
@@ -19,4 +19,4 @@ namespace nts
     };
 }
 
-#endif // XXORCOMPONENT_HPP
+#endif // NANDCOMPONENT_HPP
