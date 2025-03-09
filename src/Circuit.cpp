@@ -8,6 +8,7 @@
 #include "../include/Circuit.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/IComponent.hpp"
+#include <algorithm>
 
 nts::Circuit::Circuit()
     : _factory(nts::Factory()), _tick(0)
@@ -53,42 +54,47 @@ void nts::Circuit::displayComponentState(const std::string& name, nts::Tristate 
 
 void nts::Circuit::displayInputs() const
 {
+    std::cout << "input(s):" << std::endl;
+    std::map<std::string, nts::Tristate> sortedInputs;
+
     for (const auto &component : _components)
     {
-        //check if it is true/false or if it is an actual input/clock
         if (isTrueFalseComponent(*component.second))
             continue;
-
         if (component.first == "true" || component.first == "false" || component.first == "undefined")
             continue;
         auto clock = dynamic_cast<nts::ClockComponent *>(component.second.get());
         if (clock != nullptr)
         {
-            displayComponentState(clock->getName(), clock->getState());
+            sortedInputs[clock->getName()] = clock->getState();
             continue;
         }
         auto input = dynamic_cast<nts::InputComponent *>(component.second.get());
         if (input != nullptr)
         {
-            displayComponentState(input->getName(), input->getState());
+            sortedInputs[input->getName()] = input->getState();
+            continue;
         }
         auto trueComponent = dynamic_cast<nts::TrueComponent *>(component.second.get());
         if (trueComponent != nullptr)
         {
-            displayComponentState(trueComponent->getName(), trueComponent->getState());
+            sortedInputs[trueComponent->getName()] = trueComponent->getState();
+            continue;
         }
         auto falseComponent = dynamic_cast<nts::FalseComponent *>(component.second.get());
         if (falseComponent != nullptr)
         {
-            displayComponentState(falseComponent->getName(), falseComponent->getState());
+            sortedInputs[falseComponent->getName()] = falseComponent->getState();
         }
+    }
+    for (const auto &[name, state] : sortedInputs) {
+        displayComponentState(name, state);
     }
 }
 
 void nts::Circuit::display() const
 {
     std::cout << "tick: " << _tick << std::endl;
-    std::cout << "input(s):" << std::endl;
     displayInputs();
     std::cout << "output(s):" << std::endl;
     for (const auto &output : _outputs) {
