@@ -121,8 +121,6 @@ void nts::Circuit::linkComponents(const std::string &name1, const std::string &n
 
 void nts::Circuit::setInputState(nts::InputComponent &input, nts::Tristate state) const
 {
-    std::shared_ptr<nts::IComponent> tempComponent;
-
     if (state == nts::UNDEFINED)
         input.setLink(1, _components.at("undefined"), 1);
     else if (state == nts::TRUE)

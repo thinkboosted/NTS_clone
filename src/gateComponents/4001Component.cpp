@@ -55,11 +55,12 @@ namespace nts
                     outputPin = 11;
                     break;
             }
-            Tristate input1 = this->_pins[input1Pin].lock() ? this->_pins[input1Pin].lock()->compute(tick) : UNDEFINED;
-            Tristate input2 = this->_pins[input2Pin].lock() ? this->_pins[input2Pin].lock()->compute(tick) : UNDEFINED;
-
+            Tristate input1 = this->_pins[input1Pin - 1].lock() ? this->_pins[input1Pin - 1].lock()->compute(tick) : UNDEFINED;
+            Tristate input2 = this->_pins[input2Pin - 1].lock() ? this->_pins[input2Pin - 1].lock()->compute(tick) : UNDEFINED;
             Tristate output = NORComponent::calculateState(input1, input2);
-            this->_pins[outputPin].lock()->setState(output);
+            if (auto outputPinComponent = this->_pins[outputPin - 1].lock()) {
+                outputPinComponent->setState(output);
+            }
         }
     }
 
