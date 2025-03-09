@@ -16,6 +16,8 @@
 #include "./gateComponents/4011Component.hpp"
 #include "./gateComponents/4030Component.hpp"
 #include "./gateComponents/4069Component.hpp"
+#include "./gateComponents/4071Component.hpp"
+#include "./gateComponents/4081Component.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
@@ -57,8 +59,22 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return create4030(name);
     else if (type == "4069")
         return create4069(name);
+    else if (type == "4071")
+        return create4071(name);
+    else if (type == "4081")
+        return create4081(name);
     else
         return nullptr;
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::create4081(const std::string &name) const
+{
+    return std::make_shared<nts::Component4081>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::create4071(const std::string &name) const
+{
+    return std::make_shared<nts::Component4071>(name);
 }
 
 std::shared_ptr<nts::IComponent> nts::Factory::create4069(const std::string &name) const

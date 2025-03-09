@@ -33,8 +33,8 @@ namespace nts
             std::shared_ptr<nts::IComponent> create4011(const std::string &name) const;
             std::shared_ptr<nts::IComponent> create4030(const std::string &name) const;
             std::shared_ptr<nts::IComponent> create4069(const std::string &name) const;
-            std::shared_ptr<nts::IComponent> create4071() const;
-            std::shared_ptr<nts::IComponent> create4081() const;
+            std::shared_ptr<nts::IComponent> create4071(const std::string &name) const;
+            std::shared_ptr<nts::IComponent> create4081(const std::string &name) const;
 
             std::shared_ptr<nts::IComponent> create4008() const;
             std::shared_ptr<nts::IComponent> create4013() const;
