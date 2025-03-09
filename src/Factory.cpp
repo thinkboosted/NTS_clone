@@ -14,6 +14,8 @@
 #include "./elementaryComponents/NORComponent.hpp"
 #include "./gateComponents/4001Component.hpp"
 #include "./gateComponents/4011Component.hpp"
+#include "./gateComponents/4030Component.hpp"
+#include "./gateComponents/4069Component.hpp"
 #include "../include/specialComponents/Clock.hpp"
 #include "../include/specialComponents/Input.hpp"
 #include "../include/specialComponents/Output.hpp"
@@ -51,8 +53,17 @@ std::shared_ptr<nts::IComponent> nts::Factory::createComponent(const std::string
         return create4001(name);
     else if (type == "4011")
         return create4011(name);
+    else if (type == "4030")
+        return create4030(name);
+    else if (type == "4069")
+        return create4069(name);
     else
         return nullptr;
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::create4069(const std::string &name) const
+{
+    return std::make_shared<nts::Component4069>(name);
 }
 
 std::shared_ptr<nts::IComponent> nts::Factory::create4011(const std::string &name) const
@@ -123,4 +134,9 @@ std::shared_ptr<nts::IComponent> nts::Factory::createXOR(const std::string &name
 std::shared_ptr<nts::IComponent> nts::Factory::createNOT(const std::string &name) const
 {
     return std::make_shared<nts::NOTComponent>(name);
+}
+
+std::shared_ptr<nts::IComponent> nts::Factory::create4030(const std::string &name) const
+{
+    return std::make_shared<nts::Component4030>(name);
 }

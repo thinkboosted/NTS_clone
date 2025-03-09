@@ -1,19 +1,19 @@
-#include "./4001Component.hpp"
-#include "../elementaryComponents/NORComponent.hpp"
+#include "./4030Component.hpp"
+#include "../elementaryComponents/XORComponent.hpp"
 #include <iostream>
 
 namespace nts
 {
-    Component4001::Component4001(const std::string &name) : AGate(name, 14)
+    Component4030::Component4030(const std::string &name) : AGate(name, 14)
     {
         this->setState(UNDEFINED);
     }
 
-    Component4001::~Component4001()
+    Component4030::~Component4030()
     {
     }
 
-    void Component4001::setLink(std::size_t pin, std::shared_ptr<IComponent> other, std::size_t otherPin)
+    void Component4030::setLink(std::size_t pin, std::shared_ptr<IComponent> other, std::size_t otherPin)
     {
         (void)otherPin;
         if (pin < 1 || pin > 13 || pin == 7) {
@@ -23,7 +23,7 @@ namespace nts
         }
     }
 
-    void Component4001::simulate(std::size_t tick)
+    void Component4030::simulate(std::size_t tick)
     {
         if (tick == this->_lastTick)
             return;
@@ -57,14 +57,14 @@ namespace nts
             }
             Tristate input1 = this->_pins[input1Pin - 1].lock() ? this->_pins[input1Pin - 1].lock()->compute(tick) : UNDEFINED;
             Tristate input2 = this->_pins[input2Pin - 1].lock() ? this->_pins[input2Pin - 1].lock()->compute(tick) : UNDEFINED;
-            Tristate output = NORComponent::calculateState(input1, input2);
+            Tristate output = XORComponent::calculateState(input1, input2);
             if (auto outputPinComponent = this->_pins[outputPin - 1].lock()) {
                 outputPinComponent->setState(output);
             }
         }
     }
 
-    Tristate Component4001::compute(std::size_t tick)
+    Tristate Component4030::compute(std::size_t tick)
     {
         this->simulate(tick);
         return UNDEFINED;

@@ -16,7 +16,7 @@ namespace nts
     void Component4011::setLink(std::size_t pin, std::shared_ptr<IComponent> other, std::size_t otherPin)
     {
         (void)otherPin;
-        if (pin < 1 || pin > 14 || pin == 7) {
+        if (pin < 1 || pin > 13 || pin == 7) {
             return;
         } else {
             this->_pins[pin - 1] = other;
