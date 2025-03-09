@@ -21,18 +21,23 @@ nts::InputComponent::~InputComponent()
 
 void nts::InputComponent::simulate(std::size_t tick)
 {
-    (void)tick;
-    if (_pins[0].lock() == nullptr) {
+    if (_lastTick == tick)
+        return;
+    _lastTick = tick;
+
+    if (_pins[0].lock() == nullptr)
         this->setState(nts::UNDEFINED);
-    }
     else {
-        this->setState(_pins[0].lock()->compute(tick));
+        auto linkedComponent = _pins[0].lock();
+        linkedComponent->simulate(tick);
+        this->setState(linkedComponent->getState());
     }
 }
 
 nts::Tristate nts::InputComponent::compute(std::size_t tick)
 {
-    this->simulate(tick);
+    if (_lastTick != tick)
+        this->simulate(tick);
     return this->getState();
 }
 

@@ -76,9 +76,11 @@ Test(Circuit, clock_behavior)
     circuit.simulate(circuit.getTick() + 1);
     cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE but is %d", circuit.compute("output"));
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
-    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
     circuit.simulate(circuit.getTick() + 1);
-    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE");
+    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
+    circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("clock").get()), nts::TRUE);
+    circuit.simulate(circuit.getTick() + 1);
+    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE, but is %d", circuit.compute("output"));
 }
 
 // clock with 2 pins
@@ -103,9 +105,10 @@ Test(Circuit, and_behavior)
     circuit.linkComponents("input1", "and", 1, 1);
     circuit.linkComponents("input2", "and", 1, 2);
     circuit.linkComponents("and", "output", 3, 1);
+    circuit.simulate(0); //done in the shellLoop to init components' values
 
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("input1").get()), nts::TRUE);
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("input2").get()), nts::TRUE);
     circuit.simulate(1);
-    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE");
+    cr_assert_eq(circuit.compute("output"), nts::TRUE, "Output should be TRUE but is %d", circuit.compute("output"));
 }

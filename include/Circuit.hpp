@@ -14,6 +14,7 @@
 #include <vector>
 
 #include <iostream>
+#include <map>
 #include "./specialComponents/Input.hpp"
 
 namespace nts

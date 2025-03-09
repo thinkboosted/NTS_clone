@@ -25,26 +25,22 @@ void nts::ClockComponent::setLink(std::size_t pin, ComponentPtr other, std::size
 
 void nts::ClockComponent::simulate(std::size_t tick)
 {
-    nts::Tristate newState;
+    nts::Tristate lastState = this->getState();
 
-    if (tick == this->_lastTick)
-        return;
-    this->_lastTick = tick;
-
-    if (this->_pins[0].lock())
-        newState = this->_pins[0].lock()->compute(tick);
-    else
-        newState = nts::UNDEFINED;
-    if (newState == nts::UNDEFINED || this->_manuallySet) {
-        this->setState(newState);
-        this->_manuallySet = false;
+    if (tick == this->_lastTick) {
         return;
     }
-    if (this->getState() == nts::TRUE)
-        this->setState(nts::FALSE);
-    else
-        this->setState(nts::TRUE);
+    this->_lastTick = tick;
 
+    if (this->_pins[0].lock() && _manuallySet) {
+        this->setState(this->_pins[0].lock()->compute(tick));
+        _manuallySet = false;
+        return;
+    }
+    if (lastState == nts::TRUE)
+        this->setState(nts::FALSE);
+    else if (lastState == nts::FALSE)
+        this->setState(nts::TRUE);
 }
 
 nts::Tristate nts::ClockComponent::compute(std::size_t tick)
