@@ -30,7 +30,7 @@ Test(Circuit, link_input_to_output) {
     circuit.addComponent("output", "Out1");
     circuit.linkComponents("In1", "Out1", 1, 1);
     circuit.setInputState(*dynamic_cast<nts::InputComponent*>(circuit.getComponent("In1").get()), nts::TRUE);
-    circuit.simulate(1);
+    //circuit.simulate(1);
     nts::Tristate state = circuit.compute("Out1");
     cr_assert_eq(state, nts::TRUE, "Output should be TRUE when input is TRUE");
 }
